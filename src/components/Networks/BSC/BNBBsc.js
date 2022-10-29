@@ -120,10 +120,12 @@ const BNBBsc = (props) => {
 
                                     console.log(updateStatus)
 
-                                    if (updateStatus) {
+                                    if (updateStatus.data.data.trim() === 'success') {
                                         setLoading(false)
                                         setTransData({ trHash: reciept.transactionHash, apires: 'Success', dateTime: now.format('lll'), status: (reciept.status === "0x1" || reciept.status === true) ? true : false })
 
+                                    }else{
+                                        setErr(updateStatus.data.data)
                                     }
 
                                 } catch (error) {

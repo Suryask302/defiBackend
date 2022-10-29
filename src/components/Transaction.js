@@ -172,7 +172,7 @@ const Transaction = () => {
             title: 'Error...',
             text: `${err}`,
 
-        }).then(_ => window.location.replace(`https://user.defiai.io/buy100dapp.aspx?Status=0&Message=unable to connect with wallet !&orderid=${orderId}`)) :
+        }).then(_ => window.location.replace(`https://user.defiai.io/wallet.aspx?Status=0&Message=unable to connect with wallet !&orderid=${orderId}`)) :
 
 
             <>
