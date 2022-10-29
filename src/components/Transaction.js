@@ -4,7 +4,9 @@ import { useSearchParams } from 'react-router-dom'
 import axios from 'axios'
 import '../assets/Stylesheets/Manual.css'
 import providerOptions from '../utils/providerOptions'
-import networks from '../utils/network'
+// import networks from '../utils/network'
+import UsdtBSC from './Networks/BSC/UsdtBSC'
+import UsdtPolygon from './Networks/Polygon/UsdtPolygon'
 import MaticPolygon from './Networks/Polygon/MaticPolygon';
 import TbacPolygon from './Networks/Polygon/TbacPolygon';
 import BNBBsc from './Networks/BSC/BNBBsc';
@@ -13,6 +15,7 @@ import TbacBep20 from './Networks/BSC/TbacBep20';
 import Web3Modal from 'web3modal'
 import Swal from 'sweetalert2'
 import Web3 from "web3";
+
 
 let w3
 
@@ -137,11 +140,11 @@ const Transaction = () => {
                 setBscBnb(true)
             }
 
-            if (re_coinname.toUpperCase() === "TBAC(POLYGON)") {
+            if (re_coinname.toUpperCase() === "TBAC BEP20(BSC)") {
                 setBscTbac(true)
             }
 
-            if (re_coinname.toUpperCase() === "USDT(POLYGON)") {
+            if (re_coinname.toUpperCase() === "USDT(BSC)") {
                 setBscUsdt(true)
             }
 
@@ -180,7 +183,9 @@ const Transaction = () => {
                             isPolygonMatic ? <MaticPolygon props={acc} data={{ ...data }} we={w3} /> :
                                 isBscBnb ? <BNBBsc props={acc} data={{ ...data }} we={w3} /> :
                                     isBscTbac ? <TbacBep20 props={acc} data={{ ...data }} we={w3} /> :
-                                        <div> Invalid Combination selected </div>
+                                        isBscUsdt ? <UsdtBSC props={acc} data={{ ...data }} we={w3} /> :
+                                            isPolygonUsdt ? <UsdtPolygon props={acc} data={{ ...data }} we={w3} /> :
+                                                <div> Invalid Combination selected </div>
                         :
                         <div> Mutated Data </div>
 

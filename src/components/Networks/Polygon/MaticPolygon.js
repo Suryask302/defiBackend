@@ -22,38 +22,29 @@ const MaticPolygon = (props) => {
 
     let {
 
-        slno,
-        or_gateway,
         or_orderid,
         or_custid,
         or_curr_amt,
-        or_timestamp,
-        re_status,
-        re_order2,
-        re_user_identifier,
-        re_usercountry,
-        re_curr_amt,
-        re_currency,
-        re_tx,
-        re_datetime,
-        re_confirm,
-        re_coinname,
-        remark,
-        wallettxno,
-        re_orderID,
-        re_usd_rate,
-        re_usd_Amt,
-        re_pay_address,
-        re_purchase_id,
 
     } = props.data
+
 
     let w3 = props.we
 
     useEffect(() => {
 
+        (async function () {
+
+            let chainId = await w3.eth.getChainId()
+            if (chainId !== 137) {
+                return setErr('Please Connect To Polygon Main Net')
+            }
+
+        })();
+
         (async () => {
-            setMatic(0.91)
+            let rate = await axios.get('https://onlymatic.herokuapp.com/getMaticRate')
+            setMatic(rate.data.price.toFixed(5))
         })()
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -78,7 +69,7 @@ const MaticPolygon = (props) => {
 
                                 report = await w3.eth.getTransaction(txhash)
 
-                                if (Number(report.value / 1000000000000000000) !== Number(maticPrice)) {
+                                if (Number(report.value / 1000000000000000000) < Number(maticPrice)) {
                                     setErr('mutation in transaction Amount ..!')
                                 }
 
@@ -97,15 +88,15 @@ const MaticPolygon = (props) => {
                                     let c1resp = await axios({
 
                                         method: 'Post',
-                                        url: `https://fifityfifty.herokuapp.com/sqlFinalTr`,
+                                        url: `https://getway-defi.herokuapp.com/defiPay/api/v1`,
                                         data: {
 
-                                            order_id: re_orderID,
+                                            order_id: or_orderid,
                                             payment_status: 'confirmed',
                                             pay_currency: 'Matic(Polygon)',
-                                            pay_amount: re_curr_amt,
+                                            pay_amount: or_curr_amt,
                                             actually_paid: Number(maticPrice),
-                                            address: reciept.transactionHash,
+                                            pay_address: reciept.transactionHash,
                                             updated_at: now.format('lll'),
                                             Coin_Rate: matic
 
@@ -113,14 +104,14 @@ const MaticPolygon = (props) => {
 
                                     })
 
-
-                                    // localStorage.clear()
-                                    // window.location.replace(`https://user.defiai.io/buy100dapp.aspx?Status=1&Message=Successfully Purchased&orderid=${OrderID}`)
                                     console.log(c1resp)
 
-                                    if (c1resp) {
+                                    if (c1resp.data.data.trim() === 'success') {
                                         setLoading(false)
-                                        setTrdata({ trHash: reciept.transactionHash, apires: c1resp.data.data['Coin1_APres'], dateTime: now.format('lll'), status: (reciept.status === "0x1") ? true : false })
+                                        setTrdata({ trHash: reciept.transactionHash, apires: 'Success', dateTime: now.format('lll'), status: (reciept.status === "0x1" || reciept.status === true) ? true : false })
+
+                                    } else {
+                                        setErr(c1resp.data.data)
                                     }
 
                                 } catch (error) {
@@ -140,9 +131,6 @@ const MaticPolygon = (props) => {
                 return checkTransactionLoop();
 
             }
-
-
-
 
             let maticPrice = or_curr_amt / matic
             maticPrice = maticPrice.toFixed(5)
@@ -169,6 +157,10 @@ const MaticPolygon = (props) => {
                         })
                     })
 
+                    setTimeout(() => {
+                        window.location.replace(`https://user.defiai.io/wallet.aspx?Status=1&Message=Successfully Purchased&orderid=${or_orderid}`)
+                    }, 5000)
+
 
                 })
 
@@ -188,7 +180,7 @@ const MaticPolygon = (props) => {
             title: 'Oops...',
             text: `${err}`,
 
-        }).then(_ => window.location.replace(`https://user.defiai.io/buy100dapp.aspx?Status=0&Message=${err}&orderid=${or_orderid}`)) :
+        }).then(_ => window.location.replace(`https://user.defiai.io/wallet.aspx?Status=0&Message=${err}&orderid=${or_orderid}`)) :
 
             loading ?
                 <div className='row'>
