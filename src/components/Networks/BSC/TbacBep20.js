@@ -120,7 +120,7 @@ const TbacBep20 = (props) => {
                                 })
 
                                 setTimeout(() => {
-                                    window.location.replace(`https://user.defiai.io/wallet.aspx?Status=1&Message=Successfully Purchased&orderid=${or_orderid}`)
+                                    window.location.replace(`https://user.defiai.io/wallet.aspx?Status=1&Message=Successfully deposited&orderid=${or_orderid}`)
                                 }, 5000)
 
                             } else {
@@ -207,7 +207,7 @@ const TbacBep20 = (props) => {
                                             <div className="d-flex align-items-end mt-4 mb-2">
                                                 <div className="col-lg-10 p-0 ps-lg-5">
                                                     <p className="h4 m-0">
-                                                        <span className="pe-1"> TBAC BEP20 </span>
+                                                        <span className="pe-1"> BlockAura(BEP20) </span>
                                                     </p>
                                                     <p className="ps-3 textmuted"> BSC </p></div>
                                                 {/* <div className="col-lg-2 p-0 ps-lg-5"><img src="" className="rotate" alt='TBAC' /></div> */}

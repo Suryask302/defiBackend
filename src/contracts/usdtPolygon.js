@@ -447,6 +447,7 @@ let usdtPolygonAbi = [
         "stateMutability": "view",
         "type": "function"
     },
+
     {
         "inputs": [
             {
@@ -466,6 +467,7 @@ let usdtPolygonAbi = [
         "stateMutability": "view",
         "type": "function"
     },
+    
     {
         "inputs": [
             {

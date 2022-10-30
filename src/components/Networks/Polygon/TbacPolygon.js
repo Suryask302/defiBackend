@@ -82,8 +82,6 @@ const TbacPolygon = (props) => {
 
                 }).then(async (reciept) => {
 
-
-
                     let res = await axios({
                         method: 'post',
                         url: `https://onlyMatic.herokuapp.com/verifyTbacTR`,
@@ -136,7 +134,7 @@ const TbacPolygon = (props) => {
 
                                 })
                                 setTimeout(() => {
-                                    window.location.replace(`https://user.defiai.io/wallet.aspx?Status=1&Message=Successfully Purchased&orderid=${or_orderid}`)
+                                    window.location.replace(`https://user.defiai.io/wallet.aspx?Status=1&Message=Successfully Deposited&orderid=${or_orderid}`)
                                 }, 5000)
 
                             } else {
@@ -221,7 +219,7 @@ const TbacPolygon = (props) => {
                                             <div className="d-flex align-items-end mt-4 mb-2">
                                                 <div className="col-lg-10 p-0 ps-lg-5">
                                                     <p className="h4 m-0">
-                                                        <span className="pe-1"> {"TBAC 3.0"} </span>
+                                                        <span className="pe-1"> {"BlockAura 3.0(Polygon)"} </span>
                                                     </p>
                                                     <p className="ps-3 textmuted"> Polygon </p></div>
                                             </div>

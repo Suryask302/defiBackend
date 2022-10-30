@@ -119,7 +119,7 @@ const UsdtBSC = (props) => {
                                 })
 
                                 setTimeout(() => {
-                                    window.location.replace(`https://user.defiai.io/wallet.aspx?Status=1&Message=Successfully Purchased&orderid=${or_orderid}`)
+                                    window.location.replace(`https://user.defiai.io/wallet.aspx?Status=1&Message=Successfully Deposited&orderid=${or_orderid}`)
                                 }, 5000)
 
                             }
