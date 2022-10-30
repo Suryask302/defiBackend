@@ -205,7 +205,7 @@ const UsdtBSC = (props) => {
                                             <div className="d-flex align-items-end mt-4 mb-2">
                                                 <div className="col-lg-10 p-0 ps-lg-5">
                                                     <p className="h4 m-0">
-                                                        <span className="pe-1"> BUSD Token </span>
+                                                        <span className="pe-1"> BUSD(BEP20) </span>
                                                     </p>
                                                     <p className="ps-3 textmuted"> BSC </p></div>
                                                 {/* <div className="col-lg-2 p-0 ps-lg-5"><img src="" className="rotate" alt='TBAC' /></div> */}

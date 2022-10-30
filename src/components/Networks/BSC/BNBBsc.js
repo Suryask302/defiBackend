@@ -257,7 +257,7 @@ const BNBBsc = (props) => {
                                                 <div className="d-flex align-items-end mt-4 mb-2">
                                                     <div className="col-lg-10 p-0 ps-lg-5">
                                                         <p className="h4 m-0">
-                                                            <span className="pe-1"> BNB </span>
+                                                            <span className="pe-1"> BNB(BEP 20) </span>
                                                         </p>
                                                         <p className="ps-3 textmuted">Bsc</p>
                                                     </div>

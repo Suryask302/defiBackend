@@ -124,27 +124,27 @@ const Transaction = () => {
 
             console.log(re_coinname)
 
-            if (re_coinname.toUpperCase() === "Matic(Polygon)") {
+            if (re_coinname.toUpperCase() === "Matic(Polygon)".toLocaleUpperCase()) {
                 setPolygonMatic(true)
             }
 
-            if (re_coinname.toUpperCase() === "BlockAura 3.0(Polygon)") {
+            if (re_coinname.toUpperCase() === "BlockAura 3.0(Polygon)".toLocaleUpperCase()) {
                 setPolygonTbac(true)
             }
 
-            if (re_coinname.toUpperCase() === "USDT(Polygon)") {
+            if (re_coinname.toUpperCase() === "USDT(Polygon)".toLocaleUpperCase()) {
                 setPolygonUsdt(true)
             }
 
-            if (re_coinname.toUpperCase() === "BNB(BEP 20)") {
+            if (re_coinname.toUpperCase() === "BNB(BEP 20)".toLocaleUpperCase()) {
                 setBscBnb(true)
             }
 
-            if (re_coinname.toUpperCase() === "BlockAura(BEP20)") {
+            if (re_coinname.toUpperCase() === "BlockAura(BEP20)".toLocaleUpperCase()) {
                 setBscTbac(true)
             }
 
-            if (re_coinname.toUpperCase() === "BUSD(BEP20)") {
+            if (re_coinname.toUpperCase() === "BUSD(BEP20)".toLocaleUpperCase()) {
                 setBscUsdt(true)
             }
 
