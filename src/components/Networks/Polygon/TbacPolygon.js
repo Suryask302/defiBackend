@@ -229,11 +229,11 @@ const TbacPolygon = (props) => {
                                             </div>
                                             <div className="d-flex justify-content-between mb-2">
                                                 <p className="textmuted">rate</p>
-                                                <p className="fs-14 fw-bold"> 1 TBAC = <span className="fas fa-dollar-sign pe-1"></span>{Number(tbacC.oneTbac).toFixed(5)}</p>
+                                                <p className="fs-14 fw-bold"> 1 Blockaura3.0 = <span className="fas fa-dollar-sign pe-1"></span>{Number(tbacC.oneTbac).toFixed(5)}</p>
                                             </div>
 
                                             <div className="d-flex justify-content-between mb-3">
-                                                <p className="textmuted fw-bold">Total TBAC</p>
+                                                <p className="textmuted fw-bold">Total Blockaura's</p>
                                                 <div className="d-flex align-text-top ">
                                                     <span className="mt-1 pe-1 fs-14 "></span><span className="h4">{Number(tbacC.allTbac).toFixed(5)}</span>
                                                 </div>

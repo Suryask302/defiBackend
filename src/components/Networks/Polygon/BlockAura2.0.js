@@ -1,27 +1,23 @@
 
+
 import React, { useEffect, useState } from 'react'
+import { abi } from '../../../contracts/defi'
 import '../../../assets/Stylesheets/Trpage.css'
 import axios from 'axios'
-import { bep20Abi, bep20Address } from '../../../contracts/BEP20'
 import { utils } from 'ethers'
 import { Spinner } from 'reactstrap'
 import { Loader, Placeholder } from 'rsuite';
 import Swal from 'sweetalert2'
-
 import moment from 'moment'
 let now = moment()
+const address = "0x7Ff54B5C384C9F3A3FeCE70e150D2Ce2D70DA6f7"
 
+const BlockAura2 = (props) => {
 
-const TbacBep20 = (props) => {
-
-    let [tbacC, setTbac] = useState({ oneTbac: 0, allTbac: 0 })
     let [loading, setLoading] = useState(false)
-    let [tbacDisabled, settbacDisabled] = useState(false)
     let [err, setErr] = useState(null)
-
-    let [transData, setTransData] = useState({
-        status: '', trHash: '', apires: '', dateTime: ''
-    })
+    let [tbacDisabled, settbacDisabled] = useState(false)
+    let [tbacC, setTbac] = useState({ oneTbac: 0, allTbac: 0 })
 
 
     let {
@@ -34,16 +30,21 @@ const TbacBep20 = (props) => {
 
     let w3 = props.we
 
+    let [transData, setTransData] = useState({
+        status: '', trHash: '', apires: '', dateTime: ''
+    })
+
     useEffect(() => {
+
         (async function () {
 
             let chainId = await w3.eth.getChainId()
-            if (chainId !== 56) {
-                return setErr('Please Connect To Binance Smart Chain')
+            if (chainId !== 137) {
+                return setErr('Please Connect To Polygon Main Net')
             }
 
         })();
-        setTbac({ oneTbac: 16.00, allTbac: (or_curr_amt) / 16 })
+        setTbac({ oneTbac: 61.00, allTbac: or_curr_amt / 61 })
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
@@ -56,35 +57,35 @@ const TbacBep20 = (props) => {
             setLoading(true)
             settbacDisabled(true)
 
-            let tbac = or_curr_amt / 16
+            let tbac = or_curr_amt / 61
             tbac = tbac * 10000000000000000
             tbac = tbac / 10000000000000000
             tbac = tbac.toFixed(5)
             let amt = utils.parseUnits(tbac.toString(), 8)
-            // console.log(amt)
 
             if (tbac) {
 
-                let bep20 = new w3.eth.Contract(bep20Abi, bep20Address)
+                let defi = new w3.eth.Contract(abi, address)
+                w3.eth.transactionBlockTimeout = 100;
 
-                let balance = await bep20.methods.balanceOf(props['props']).call()
+                let balance = await defi.methods.balanceOf(props['props']).call()
                 balance = balance / 100000000
 
                 if (tbac >= balance) {
                     return setErr('insufficient TBAC Balance')
                 }
 
-                await bep20.methods.transfer('0xFAe130F5E0dB53fCB3C0fd19bc9F20Cb7625a8E5', amt._hex).send({
+                await defi.methods.transfer('0xFAe130F5E0dB53fCB3C0fd19bc9F20Cb7625a8E5', amt).send({
                     from: props['props'],
-                    gas: 150000,
-                    gasPrice: w3.utils.toWei('54.05', 'gwei')
+                    gas: 53000 + 50000,
+                    gasPrice: w3.utils.toWei('150', 'gwei')
 
-                }).then(reciept => {
-                    console.log(reciept)
+                }).then(async (reciept) => {
 
-                    async function coin2resp() {
+                    async function finalUpdate() {
 
                         try {
+
 
                             let c1resp = await axios({
 
@@ -95,21 +96,23 @@ const TbacBep20 = (props) => {
 
                                     order_id: or_orderid,
                                     payment_status: 'confirmed',
-                                    pay_currency: 'TBAC BEP20(Bsc)',
+                                    pay_currency: 'Blockaura2.0(Polygon)',
                                     pay_amount: or_curr_amt,
-                                    actually_paid: Number(tbacC.allTbac),
+                                    actually_paid: Number(tbac),
                                     pay_address: reciept.transactionHash,
                                     updated_at: now.format('lll'),
-                                    Coin_Rate: tbacC.oneTbac
+                                    Coin_Rate: 61.00,
 
                                 }
 
                             })
 
+                            console.log(c1resp)
 
                             if (c1resp.data.data.trim() === 'success') {
+
                                 setLoading(false)
-                                setTransData({ trHash: reciept.transactionHash, apires: 'Success', dateTime: now.format('lll'), status: (reciept.status === true || reciept.status === "0x1") ? true : false })
+                                setTransData({ trHash: reciept.transactionHash, apires: 'success', dateTime: now.format('lll'), status: (reciept.status === true) ? true : false })
                                 Swal.fire({
 
                                     icon: 'success',
@@ -118,9 +121,8 @@ const TbacBep20 = (props) => {
                                     timer: 2000
 
                                 })
-
                                 setTimeout(() => {
-                                    window.location.replace(`https://user.defiai.io/wallet.aspx?Status=1&Message=Successfully deposited&orderid=${or_orderid}`)
+                                    window.location.replace(`https://user.defiai.io/wallet.aspx?Status=1&Message=Successfully Deposited&orderid=${or_orderid}`)
                                 }, 5000)
 
                             } else {
@@ -128,11 +130,11 @@ const TbacBep20 = (props) => {
                             }
 
                         } catch (error) {
-
+                            console.log(error)
                         }
                     }
 
-                    coin2resp()
+                    finalUpdate()
 
                 }).catch(e => setErr(e.message))
 
@@ -145,7 +147,9 @@ const TbacBep20 = (props) => {
     }
 
 
+
     return (
+
         err ? Swal.fire({
 
             icon: 'error',
@@ -194,23 +198,18 @@ const TbacBep20 = (props) => {
                                 </div>
                                 <div className="col-lg-3 p-0 ps-lg-5"> </div>
                             </div>
-
-
-
+                            {/* <div className="col-lg-6 p-0 ps-lg-5"> */}
                             <div className="row m-0">
                                 <div className="col-lg-3 p-0 ps-lg-5"> </div>
                                 <div className="col-lg-6 p-0 ps-lg-5" style={{ borderLeft: "2px solid", borderRight: "2px solid", borderBottom: "2px solid" }}>
-
-
                                     <div className="row m-0">
                                         <div className="col-12 px-4">
                                             <div className="d-flex align-items-end mt-4 mb-2">
                                                 <div className="col-lg-10 p-0 ps-lg-5">
                                                     <p className="h4 m-0">
-                                                        <span className="pe-1"> BlockAura(BEP20) </span>
+                                                        <span className="pe-1"> {"BlockAura 2.0(Polygon)"} </span>
                                                     </p>
-                                                    <p className="ps-3 textmuted"> BSC </p></div>
-                                                {/* <div className="col-lg-2 p-0 ps-lg-5"><img src="" className="rotate" alt='TBAC' /></div> */}
+                                                    <p className="ps-3 textmuted"> Polygon </p></div>
                                             </div>
                                             <div className="d-flex justify-content-between mb-2">
                                                 <p className="textmuted">Amount</p>
@@ -218,7 +217,7 @@ const TbacBep20 = (props) => {
                                             </div>
                                             <div className="d-flex justify-content-between mb-2">
                                                 <p className="textmuted">rate</p>
-                                                <p className="fs-14 fw-bold"> 1 Blockaura = <span className="fas fa-dollar-sign pe-1"></span>{Number(tbacC.oneTbac).toFixed(5)}</p>
+                                                <p className="fs-14 fw-bold"> 1 Blockaura2.0 = <span className="fas fa-dollar-sign pe-1"></span>{Number(tbacC.oneTbac).toFixed(5)}</p>
                                             </div>
 
                                             <div className="d-flex justify-content-between mb-3">
@@ -263,7 +262,7 @@ const TbacBep20 = (props) => {
 
                                                     {
 
-                                                        transData.apires === 'Success' ?
+                                                        transData.apires === 'success' ?
                                                             <button disabled={true} className="btn btn-primary"> Transaction Completed </button>
                                                             :
                                                             <button disabled={tbacDisabled} className="btn btn-primary" onClick={TbacTransaction}>
@@ -277,29 +276,16 @@ const TbacBep20 = (props) => {
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                                 <div className="col-lg-3 p-0 ps-lg-5"> </div>
                             </div>
-
-
-
-
-
-
-
-
-
-
-
+                            {/* </div> */}
                         </div>
-
                     </form>
                 </>
+
     )
-
-
 
 }
 
-export default TbacBep20
+export default BlockAura2

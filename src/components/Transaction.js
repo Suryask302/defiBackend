@@ -15,6 +15,8 @@ import TbacBep20 from './Networks/BSC/TbacBep20';
 import Web3Modal from 'web3modal'
 import Swal from 'sweetalert2'
 import Web3 from "web3";
+import BlockAura2 from './Networks/Polygon/BlockAura2.0'
+// import BlockauraErc20 from './Networks/Ethereum/BlockauraErc20'
 
 
 let w3
@@ -31,6 +33,10 @@ const Transaction = () => {
     const [isBscBnb, setBscBnb] = useState(false)
     const [isBscTbac, setBscTbac] = useState(false)
     const [isBscUsdt, setBscUsdt] = useState(false)
+    const [isBlockaura2, setBlockaura2] = useState(false)
+    // const [isBlockauraErc20, setBlockauraErc20] = useState(false)
+
+
 
     const [searchParams] = useSearchParams()
     let orderId = searchParams.get('orderid')
@@ -148,6 +154,14 @@ const Transaction = () => {
                 setBscUsdt(true)
             }
 
+            if (re_coinname.toUpperCase() === "BlockAura 2.0(Polygon)".toLocaleUpperCase()) {
+                setBlockaura2(true)
+            }
+
+            // if (re_coinname.toUpperCase() === "BlockAura 3.0(Erc20)".toLocaleUpperCase()) {
+            //     setBlockauraErc20(true)
+            // }
+
 
             setData(resp.data.data)
 
@@ -185,9 +199,11 @@ const Transaction = () => {
                                     isBscTbac ? <TbacBep20 props={acc} data={{ ...data }} we={w3} /> :
                                         isBscUsdt ? <UsdtBSC props={acc} data={{ ...data }} we={w3} /> :
                                             isPolygonUsdt ? <UsdtPolygon props={acc} data={{ ...data }} we={w3} /> :
-                                                <div> Invalid Combination selected </div>
+                                                isBlockaura2 ? <BlockAura2 props={acc} data={{ ...data }} we={w3} /> :
+                                                    // isBlockauraErc20 ? <BlockauraErc20 props={acc} data={{ ...data }} we={w3} /> :
+                                                        <div> Invalid Combination selected </div>
                         :
-                        <div> Mutated Data </div>
+                        <div> Verification is in Process, Please Wait... </div>
 
                 }
             </>

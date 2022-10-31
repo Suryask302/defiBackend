@@ -112,6 +112,7 @@ const BNBBsc = (props) => {
                                             pay_address: reciept.transactionHash,
                                             updated_at: now.format('lll'),
                                             Coin_Rate: bnb
+                                            
 
 
                                         }

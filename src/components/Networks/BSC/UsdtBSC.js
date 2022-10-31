@@ -216,7 +216,7 @@ const UsdtBSC = (props) => {
                                             </div>
                                             <div className="d-flex justify-content-between mb-2">
                                                 <p className="textmuted">rate</p>
-                                                <p className="fs-14 fw-bold"> 1 USDT = <span className="fas fa-dollar-sign pe-1"></span>{Number(usdt.oneUsdt).toFixed(5)}</p>
+                                                <p className="fs-14 fw-bold"> 1 BUSD = <span className="fas fa-dollar-sign pe-1"></span>{Number(usdt.oneUsdt).toFixed(5)}</p>
                                             </div>
 
                                             <div className="d-flex justify-content-between mb-3">
