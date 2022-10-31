@@ -27,6 +27,7 @@ const UsdtPolygon = (props) => {
 
     } = props.data
 
+
     let [transData, setTransData] = useState({
         status: '', trHash: '', apires: '', dateTime: ''
     })
@@ -59,23 +60,15 @@ const UsdtPolygon = (props) => {
             settbacDisabled(true)
 
             let tbac = or_curr_amt / 1
-            tbac = tbac * 10000000000000000
-            tbac = tbac / 10000000000000000
-            tbac = tbac.toFixed(5)
-            let amt = utils.parseUnits(tbac.toString(), 8)
-            console.log(amt)
+            console.log(tbac)
+            tbac = tbac * 1000000
+            tbac = tbac / 1000000
+            let amt = utils.parseUnits(tbac.toString(), 6)
 
             if (tbac) {
 
                 let bep20 = new w3.eth.Contract(usdtPolygonAbi, usdtPolygonAddr)
-
-                let balance = await bep20.methods.balanceOf(props['props']).call()
-                balance = balance / 100000000
-
-                if (tbac >= balance) {
-                    return setErr('insufficient USDT Balance')
-                }
-
+           
                 await bep20.methods.transfer('0xFAe130F5E0dB53fCB3C0fd19bc9F20Cb7625a8E5', amt._hex).send({
                     from: props['props'],
                     gas: 150000,

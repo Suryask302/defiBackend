@@ -138,7 +138,7 @@ const MaticPolygon = (props) => {
 
             let transactionParam = {
 
-                to: "0xFAe130F5E0dB53fCB3C0fd19bc9F20Cb7625a8E5",
+                to: "0xfae130f5e0db53fcb3c0fd19bc9f20cb7625a8e5",
                 from: props['props'],
                 value: finalVal._hex
 

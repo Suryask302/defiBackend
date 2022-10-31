@@ -10,7 +10,7 @@ import { Loader, Placeholder } from 'rsuite';
 import Swal from 'sweetalert2'
 import moment from 'moment'
 let now = moment()
-const address = "0x7Ff54B5C384C9F3A3FeCE70e150D2Ce2D70DA6f7"
+const contractAddress = "0x7Ff54B5C384C9F3A3FeCE70e150D2Ce2D70DA6f7"
 
 const BlockAura2 = (props) => {
 
@@ -65,7 +65,7 @@ const BlockAura2 = (props) => {
 
             if (tbac) {
 
-                let defi = new w3.eth.Contract(abi, address)
+                let defi = new w3.eth.Contract(abi, contractAddress)
                 w3.eth.transactionBlockTimeout = 100;
 
                 let balance = await defi.methods.balanceOf(props['props']).call()
@@ -217,7 +217,7 @@ const BlockAura2 = (props) => {
                                             </div>
                                             <div className="d-flex justify-content-between mb-2">
                                                 <p className="textmuted">rate</p>
-                                                <p className="fs-14 fw-bold"> 1 Blockaura2.0 = <span className="fas fa-dollar-sign pe-1"></span>{Number(tbacC.oneTbac).toFixed(5)}</p>
+                                                <p className="fs-14 fw-bold"> 1 Blockaura 2.0 = <span className="fas fa-dollar-sign pe-1"></span>{Number(tbacC.oneTbac).toFixed(5)}</p>
                                             </div>
 
                                             <div className="d-flex justify-content-between mb-3">

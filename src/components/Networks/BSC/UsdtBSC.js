@@ -15,7 +15,7 @@ const UsdtBSC = (props) => {
 
     let [usdt, setUsdt] = useState({ oneUsdt: 0, allUsdt: 0 })
     let [loading, setLoading] = useState(false)
-    let [tbacDisabled, settbacDisabled] = useState(false)
+    let [BUSDDisabled, setBUSDDisabled] = useState(false)
     let [err, setErr] = useState(null)
 
 
@@ -53,23 +53,23 @@ const UsdtBSC = (props) => {
         try {
 
             setLoading(true)
-            settbacDisabled(true)
+            setBUSDDisabled(true)
 
-            let tbac = or_curr_amt / 1
-            tbac = tbac * 10000000000000000
-            tbac = tbac / 10000000000000000
-            tbac = tbac.toFixed(5)
-            let amt = utils.parseUnits(tbac.toString(), 8)
+            let BUSD = or_curr_amt / 1
+            BUSD = BUSD * 10000000000000000
+            BUSD = BUSD / 10000000000000000
+            BUSD = BUSD.toFixed(5)
+            let amt = utils.parseUnits(BUSD.toString(), 8)
             console.log(amt)
 
-            if (tbac) {
+            if (BUSD) {
 
                 let bep20 = new w3.eth.Contract(usdtBscAbi, usdtBscAddr)
 
                 let balance = await bep20.methods.balanceOf(props['props']).call()
                 balance = balance / 100000000
 
-                if (tbac >= balance) {
+                if (BUSD >= balance) {
                     return setErr('insufficient BUSD Balance')
                 }
 
@@ -96,10 +96,10 @@ const UsdtBSC = (props) => {
                                     payment_status: 'confirmed',
                                     pay_currency: 'BUSD',
                                     pay_amount: or_curr_amt,
-                                    actually_paid: Number(usdt.allTbac),
+                                    actually_paid: Number(usdt['allUsdt']),
                                     pay_address: reciept.transactionHash,
                                     updated_at: now.format('lll'),
-                                    Coin_Rate: usdt.oneTbac
+                                    Coin_Rate: usdt['oneUsdt']
 
                                 }
 
@@ -208,7 +208,7 @@ const UsdtBSC = (props) => {
                                                         <span className="pe-1"> BUSD(BEP20) </span>
                                                     </p>
                                                     <p className="ps-3 textmuted"> BSC </p></div>
-                                                {/* <div className="col-lg-2 p-0 ps-lg-5"><img src="" className="rotate" alt='TBAC' /></div> */}
+                                                {/* <div className="col-lg-2 p-0 ps-lg-5"><img src="" className="rotate" alt='BUSD' /></div> */}
                                             </div>
                                             <div className="d-flex justify-content-between mb-2">
                                                 <p className="textmuted">Amount</p>
@@ -216,7 +216,7 @@ const UsdtBSC = (props) => {
                                             </div>
                                             <div className="d-flex justify-content-between mb-2">
                                                 <p className="textmuted">rate</p>
-                                                <p className="fs-14 fw-bold"> 1 BUSD = <span className="fas fa-dollar-sign pe-1"></span>{Number(usdt.oneUsdt).toFixed(5)}</p>
+                                                <p className="fs-14 fw-bold"> 1 BUSD = <span className="fas fa-dollar-sign pe-1"></span>{Number(usdt['oneUsdt']).toFixed(5)}</p>
                                             </div>
 
                                             <div className="d-flex justify-content-between mb-3">
@@ -264,7 +264,7 @@ const UsdtBSC = (props) => {
                                                         transData.apires === 'Success' ?
                                                             <button disabled={true} className="btn btn-primary"> Transaction Completed </button>
                                                             :
-                                                            <button disabled={tbacDisabled} className="btn btn-primary" onClick={usdtBscTra}>
+                                                            <button disabled={BUSDDisabled} className="btn btn-primary" onClick={usdtBscTra}>
                                                                 {loading ? <Spinner color='light' /> : transData.apires ? "Transaction Completed" : "Pay Now"}
                                                                 {loading ? <span> </span> : <span className="fas fa-arrow-right ps-2"></span>}
                                                             </button>
