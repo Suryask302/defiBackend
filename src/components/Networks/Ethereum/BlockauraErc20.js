@@ -107,8 +107,6 @@ const BlockauraErc20 = (props) => {
 
                             })
 
-                            console.log(c1resp)
-
                             if (c1resp.data.data.trim() === 'success') {
 
                                 setLoading(false)
@@ -130,7 +128,7 @@ const BlockauraErc20 = (props) => {
                             }
 
                         } catch (error) {
-                            console.log(error)
+
                         }
                     }
 

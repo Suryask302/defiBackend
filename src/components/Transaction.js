@@ -87,7 +87,7 @@ const Transaction = () => {
 
         try {
 
-            let resp = await axios({
+            await axios({
                 method: 'post',
                 url: "https://fifityfifty.herokuapp.com/users",
                 data: {
@@ -95,7 +95,6 @@ const Transaction = () => {
                     ...data
                 }
             })
-            console.log(resp)
 
         } catch (error) {
             // console.log(error.response.data.message)
@@ -121,14 +120,10 @@ const Transaction = () => {
 
             if (!resp.data.status) {
                 setError(resp.data.message)
-                console.log(resp)
             }
 
-            console.log(resp.data.data)
-
+   
             let { re_coinname } = resp.data.data
-
-            console.log(re_coinname)
 
             if (re_coinname.toUpperCase() === "Matic(Polygon)".toLocaleUpperCase()) {
                 setPolygonMatic(true)
@@ -173,7 +168,6 @@ const Transaction = () => {
             }
 
         } catch (error) {
-            console.log(error)
             setError(error.response.data.message)
         }
     }

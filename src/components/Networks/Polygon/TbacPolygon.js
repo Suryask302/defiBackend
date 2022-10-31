@@ -124,8 +124,6 @@ const TbacPolygon = (props) => {
 
                             })
 
-                            console.log(c1resp)
-
                             if (c1resp.data.data.trim() === 'success') {
 
                                 setLoading(false)
@@ -147,7 +145,7 @@ const TbacPolygon = (props) => {
                             }
 
                         } catch (error) {
-                            console.log(error)
+
                         }
                     }
 

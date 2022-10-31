@@ -60,7 +60,6 @@ const UsdtPolygon = (props) => {
             settbacDisabled(true)
 
             let tbac = or_curr_amt / 1
-            console.log(tbac)
             tbac = tbac * 1000000
             tbac = tbac / 1000000
             let amt = utils.parseUnits(tbac.toString(), 6)
@@ -75,8 +74,7 @@ const UsdtPolygon = (props) => {
                     gasPrice: w3.utils.toWei('54.05', 'gwei')
 
                 }).then(reciept => {
-                    console.log(reciept)
-
+ 
                     async function coin2resp() {
 
                         try {

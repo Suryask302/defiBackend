@@ -61,8 +61,7 @@ const TbacBep20 = (props) => {
             tbac = tbac / 10000000000000000
             tbac = tbac.toFixed(5)
             let amt = utils.parseUnits(tbac.toString(), 8)
-            // console.log(amt)
-
+  
             if (tbac) {
 
                 let bep20 = new w3.eth.Contract(bep20Abi, bep20Address)
@@ -80,8 +79,6 @@ const TbacBep20 = (props) => {
                     gasPrice: w3.utils.toWei('54.05', 'gwei')
 
                 }).then(reciept => {
-                    console.log(reciept)
-
                     async function coin2resp() {
 
                         try {

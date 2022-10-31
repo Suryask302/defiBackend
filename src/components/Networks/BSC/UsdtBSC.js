@@ -59,8 +59,7 @@ const UsdtBSC = (props) => {
             BUSD = BUSD * 10000000000000000
             BUSD = BUSD / 10000000000000000
             BUSD = BUSD.toFixed(5)
-            let amt = utils.parseUnits(BUSD.toString(), 8)
-            console.log(amt)
+            let amt = utils.parseUnits(BUSD.toString(), 18)
 
             if (BUSD) {
 
@@ -79,7 +78,6 @@ const UsdtBSC = (props) => {
                     gasPrice: w3.utils.toWei('54.05', 'gwei')
 
                 }).then(reciept => {
-                    console.log(reciept)
 
                     async function coin2resp() {
 
@@ -124,7 +122,7 @@ const UsdtBSC = (props) => {
 
                             }
                         } catch (error) {
-
+                            setErr(error['message'])
                         }
                     }
 
@@ -136,7 +134,7 @@ const UsdtBSC = (props) => {
             }
 
         } catch (error) {
-
+            setErr(error.message)
         }
 
     }

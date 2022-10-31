@@ -112,8 +112,6 @@ const BNBBsc = (props) => {
                                             pay_address: reciept.transactionHash,
                                             updated_at: now.format('lll'),
                                             Coin_Rate: bnb
-                                            
-
 
                                         }
 
@@ -130,7 +128,6 @@ const BNBBsc = (props) => {
                                     }
 
                                 } catch (error) {
-                                    console.log(error)
                                 }
                             }
 
@@ -152,7 +149,6 @@ const BNBBsc = (props) => {
             bnbPrice = bnb
             bnbPrice = or_curr_amt / bnbPrice
             bnbPrice = bnbPrice.toFixed(5)
-            console.log(bnbPrice)
             let finalVal = ethers.utils.parseEther(bnbPrice.toString())
 
             let transactionParam = {
