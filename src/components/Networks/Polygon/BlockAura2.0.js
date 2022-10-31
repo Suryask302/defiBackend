@@ -44,7 +44,7 @@ const BlockAura2 = (props) => {
             }
 
         })();
-        setTbac({ oneTbac: 61.00, allTbac: or_curr_amt / 61 })
+        setTbac({ oneTbac: 16.00, allTbac: or_curr_amt / 16.00 })
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
@@ -57,7 +57,7 @@ const BlockAura2 = (props) => {
             setLoading(true)
             settbacDisabled(true)
 
-            let tbac = or_curr_amt / 61
+            let tbac = or_curr_amt / 16.00
             tbac = tbac * 10000000000000000
             tbac = tbac / 10000000000000000
             tbac = tbac.toFixed(5)
@@ -101,7 +101,7 @@ const BlockAura2 = (props) => {
                                     actually_paid: Number(tbac),
                                     pay_address: reciept.transactionHash,
                                     updated_at: now.format('lll'),
-                                    Coin_Rate: 61.00,
+                                    Coin_Rate: 16.00,
 
                                 }
 

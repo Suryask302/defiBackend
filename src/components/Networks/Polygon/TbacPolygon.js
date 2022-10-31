@@ -90,6 +90,11 @@ const TbacPolygon = (props) => {
                         }
                     })
 
+         
+                    if(Number(res.data.data.data['amount']) < Number(tbacC.allTbac).toFixed(5)) {
+                        return setErr(`mutation in transaction address`)
+                    }
+
                     if ('0xFAe130F5E0dB53fCB3C0fd19bc9F20Cb7625a8E5'.toLowerCase() !== res.data.data.data['receiver'].toLowerCase()) {
                         return setErr(`mutation in transaction address`)
                     }
