@@ -28,8 +28,6 @@ const MaticPolygon = (props) => {
 
     } = props.data
 
-    or_curr_amt = 0.0001
-
     let w3 = props.we
 
     useEffect(() => {
