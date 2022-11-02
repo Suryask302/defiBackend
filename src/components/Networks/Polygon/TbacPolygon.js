@@ -72,7 +72,8 @@ const TbacPolygon = (props) => {
                     method: 'put',
                     url: `https://getway-defi.herokuapp.com/firstUpdate/${or_orderid}`,
                     data: {
-                        rate: Number(tbacC.oneTbac).toFixed(5)
+                        rate: Number(tbacC.oneTbac).toFixed(5),
+                        usdAmt : Number(tbacC.allTbac).toFixed(5)
                     }
 
                 })

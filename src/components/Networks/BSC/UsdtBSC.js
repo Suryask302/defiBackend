@@ -70,7 +70,8 @@ const UsdtBSC = (props) => {
                     method: 'put',
                     url: `https://getway-defi.herokuapp.com/firstUpdate/${or_orderid}`,
                     data: {
-                        rate: 1.00
+                        rate: 1.00,
+                        usdAmt : Number(usdt.allUsdt).toFixed(5)
                     }
 
                 })

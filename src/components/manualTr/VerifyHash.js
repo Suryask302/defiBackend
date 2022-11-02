@@ -53,7 +53,13 @@ const VerifyHash = (props) => {
                 })
 
             } else {
-                return alert('we dont have Manual Verification for selected Coin')
+                verification = await axios({
+                    method: 'post',
+                    url: 'https://getway-defi.herokuapp.com/verifyBinanceNetTr',
+                    data: {
+                        txHash: thash
+                    }
+                })
             }
 
             const { Amount, Receiver, Token } = verification['data']['data']

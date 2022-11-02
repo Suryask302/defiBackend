@@ -148,7 +148,8 @@ const MaticPolygon = (props) => {
                 method: 'put',
                 url: `https://getway-defi.herokuapp.com/firstUpdate/${or_orderid}`,
                 data: {
-                    rate: matic
+                    rate: matic,
+                    usdAmt : Number(or_curr_amt / matic).toFixed(5)
                 }
 
             })

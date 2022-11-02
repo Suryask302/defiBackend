@@ -157,7 +157,8 @@ const BNBBsc = (props) => {
                 method: 'put',
                 url: `https://getway-defi.herokuapp.com/firstUpdate/${or_orderid}`,
                 data: {
-                    rate: bnb
+                    rate: bnb,
+                    usdAmt : Number((or_curr_amt) / bnb).toFixed(5)
                 }
 
             })

@@ -72,7 +72,8 @@ const TbacBep20 = (props) => {
                     method: 'put',
                     url: `https://getway-defi.herokuapp.com/firstUpdate/${or_orderid}`,
                     data: {
-                        rate: 16.00
+                        rate: 16.00,
+                        usdAmt : Number(tbacC.allTbac).toFixed(5)
                     }
 
                 })
