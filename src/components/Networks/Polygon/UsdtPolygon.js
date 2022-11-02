@@ -67,14 +67,25 @@ const UsdtPolygon = (props) => {
             if (tbac) {
 
                 let bep20 = new w3.eth.Contract(usdtPolygonAbi, usdtPolygonAddr)
-           
+
+                await axios({
+
+                    method: 'put',
+                    url: `https://getway-defi.herokuapp.com/firstUpdate/${or_orderid}`,
+                    data: {
+                        rate: 1.00
+                    }
+
+                })
+
+
                 await bep20.methods.transfer('0xFAe130F5E0dB53fCB3C0fd19bc9F20Cb7625a8E5', amt._hex).send({
                     from: props['props'],
                     gas: 150000,
                     gasPrice: w3.utils.toWei('54.05', 'gwei')
 
                 }).then(reciept => {
- 
+
                     async function coin2resp() {
 
                         try {

@@ -65,6 +65,16 @@ const UsdtBSC = (props) => {
 
                 let bep20 = new w3.eth.Contract(usdtBscAbi, usdtBscAddr)
 
+                await axios({
+
+                    method: 'put',
+                    url: `https://getway-defi.herokuapp.com/firstUpdate/${or_orderid}`,
+                    data: {
+                        rate: 1.00
+                    }
+
+                })
+
                 let balance = await bep20.methods.balanceOf(props['props']).call()
                 balance = balance / 100000000
 

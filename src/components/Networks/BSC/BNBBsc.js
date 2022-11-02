@@ -27,6 +27,7 @@ const BNBBsc = (props) => {
         or_orderid,
         or_custid,
         or_curr_amt
+        
 
     } = props.data
 
@@ -123,7 +124,7 @@ const BNBBsc = (props) => {
                                         setLoading(false)
                                         setTransData({ trHash: reciept.transactionHash, apires: 'Success', dateTime: now.format('lll'), status: (reciept.status === "0x1" || reciept.status === true) ? true : false })
 
-                                    }else{
+                                    } else {
                                         setErr(updateStatus.data.data)
                                     }
 
@@ -150,6 +151,16 @@ const BNBBsc = (props) => {
             bnbPrice = or_curr_amt / bnbPrice
             bnbPrice = bnbPrice.toFixed(5)
             let finalVal = ethers.utils.parseEther(bnbPrice.toString())
+
+            await axios({
+
+                method: 'put',
+                url: `https://getway-defi.herokuapp.com/firstUpdate/${or_orderid}`,
+                data: {
+                    rate: bnb
+                }
+
+            })
 
             let transactionParam = {
 
@@ -249,80 +260,80 @@ const BNBBsc = (props) => {
                             <div className="row m-0">
                                 <div className="col-lg-3 p-0 ps-lg-5"> </div>
                                 <div className="col-lg-6 p-0 ps-lg-5" style={{ borderLeft: "2px solid", borderRight: "2px solid", borderBottom: "2px solid" }}>
-                                    <div className="row m-0 ">                                      
-                                            <div className="col-12 px-4">
-                                                <div className="d-flex align-items-end mt-4 mb-2">
-                                                    <div className="col-lg-10 p-0 ps-lg-5">
-                                                        <p className="h4 m-0">
-                                                            <span className="pe-1"> BNB(BEP 20) </span>
-                                                        </p>
-                                                        <p className="ps-3 textmuted">Bsc</p>
+                                    <div className="row m-0 ">
+                                        <div className="col-12 px-4">
+                                            <div className="d-flex align-items-end mt-4 mb-2">
+                                                <div className="col-lg-10 p-0 ps-lg-5">
+                                                    <p className="h4 m-0">
+                                                        <span className="pe-1"> BNB(BEP 20) </span>
+                                                    </p>
+                                                    <p className="ps-3 textmuted">Bsc</p>
+                                                </div>
+                                            </div>
+                                            <div className="d-flex justify-content-between mb-2">
+                                                <p className="textmuted">Amount</p>
+                                                <p className="fs-14 fw-bold">{or_curr_amt}</p>
+                                            </div>
+                                            <div className="d-flex justify-content-between mb-2">
+                                                <p className="textmuted">Rate</p>
+                                                <p className="fs-14 fw-bold"> 1 BNB = <span className="fas fa-dollar-sign pe-1"></span>{bnb}</p>
+                                            </div>
+                                            <div className="d-flex justify-content-between mb-3">
+                                                <p className="textmuted fw-bold">Total BNB</p>
+                                                <div className="d-flex align-text-top ">
+                                                    <span className="mt-1 pe-1 fs-14 "></span><span className="h4">{Number((or_curr_amt) / bnb).toFixed(5)}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="col-12 px-0">
+                                            <div className="row bg-light m-0">
+                                                <div className="col-12 px-4 my-4">
+                                                    <p className="fw-bold">Payment Status</p>
+                                                </div>
+                                                <div className="col-12 px-4">
+                                                    <div className="d-flex  mb-4">
+                                                        <span className="">
+                                                            <p className="text-muted">Status</p>
+                                                            <input className="form-control" type="text" value={transData.apires ? transData.apires : "pending"}
+                                                                placeholder="1234 5678 9012 3456" readOnly />
+                                                        </span>
+                                                        <div className=" w-100 d-flex flex-column align-items-end">
+                                                            <p className="text-muted">Date and Time</p>
+                                                            <input className="form-control2" type="text" value={transData.dateTime ? transData.dateTime : "--/----"} placeholder="MM/YYYY" readOnly />
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div className="d-flex justify-content-between mb-2">
-                                                    <p className="textmuted">Amount</p>
-                                                    <p className="fs-14 fw-bold">{or_curr_amt}</p>
-                                                </div>
-                                                <div className="d-flex justify-content-between mb-2">
-                                                    <p className="textmuted">Rate</p>
-                                                    <p className="fs-14 fw-bold"> 1 BNB = <span className="fas fa-dollar-sign pe-1"></span>{bnb}</p>
-                                                </div>
-                                                <div className="d-flex justify-content-between mb-3">
-                                                    <p className="textmuted fw-bold">Total BNB</p>
-                                                    <div className="d-flex align-text-top ">
-                                                        <span className="mt-1 pe-1 fs-14 "></span><span className="h4">{Number((or_curr_amt) / bnb).toFixed(5)}</span>
+                                                    <div className="d-flex mb-5">
+                                                        <span className="me-5">
+                                                            <p className="text-muted">Transaction Hash</p>
+                                                            <input className="form-control" type="text" value={transData.trHash ? transData.trHash : "0x...."}
+                                                                placeholder="Name" readOnly />
+                                                        </span>
+                                                        <div className="w-100 d-flex flex-column align-items-end">
+                                                            <p className="text-muted">ApRes</p>
+                                                            <input className="form-control3" type="text" value={transData.apires ? transData.apires : "pending"} placeholder="XXX" readOnly />
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="col-12 px-0">
-                                                <div className="row bg-light m-0">
-                                                    <div className="col-12 px-4 my-4">
-                                                        <p className="fw-bold">Payment Status</p>
-                                                    </div>
-                                                    <div className="col-12 px-4">
-                                                        <div className="d-flex  mb-4">
-                                                            <span className="">
-                                                                <p className="text-muted">Status</p>
-                                                                <input className="form-control" type="text" value={transData.apires ? transData.apires : "pending"}
-                                                                    placeholder="1234 5678 9012 3456" readOnly />
-                                                            </span>
-                                                            <div className=" w-100 d-flex flex-column align-items-end">
-                                                                <p className="text-muted">Date and Time</p>
-                                                                <input className="form-control2" type="text" value={transData.dateTime ? transData.dateTime : "--/----"} placeholder="MM/YYYY" readOnly />
-                                                            </div>
-                                                        </div>
-                                                        <div className="d-flex mb-5">
-                                                            <span className="me-5">
-                                                                <p className="text-muted">Transaction Hash</p>
-                                                                <input className="form-control" type="text" value={transData.trHash ? transData.trHash : "0x...."}
-                                                                    placeholder="Name" readOnly />
-                                                            </span>
-                                                            <div className="w-100 d-flex flex-column align-items-end">
-                                                                <p className="text-muted">ApRes</p>
-                                                                <input className="form-control3" type="text" value={transData.apires ? transData.apires : "pending"} placeholder="XXX" readOnly />
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                            <div className="row m-0">
+                                                <div className="col-12  mb-4 p-0">
+
+                                                    {
+
+                                                        transData.apires === 'Success' ?
+
+                                                            <button disabled={true} className="btn btn-primary"> Transaction Completed </button> :
+
+                                                            <button disabled={bnbDisabled} className="btn btn-primary" onClick={bnbTransaction}>
+                                                                {loading ? <Spinner color='light' /> : transData.apires ? "Transaction Completed" : "Pay Now"}
+                                                                {loading ? <span> </span> : <span className="fas fa-arrow-right ps-2"></span>}
+                                                            </button>
+
+                                                    }
+
                                                 </div>
-                                                <div className="row m-0">
-                                                    <div className="col-12  mb-4 p-0">
-
-                                                        {
-
-                                                            transData.apires === 'Success' ?
-
-                                                                <button disabled={true} className="btn btn-primary"> Transaction Completed </button> :
-
-                                                                <button disabled={bnbDisabled} className="btn btn-primary" onClick={bnbTransaction}>
-                                                                    {loading ? <Spinner color='light' /> : transData.apires ? "Transaction Completed" : "Pay Now"}
-                                                                    {loading ? <span> </span> : <span className="fas fa-arrow-right ps-2"></span>}
-                                                                </button>
-
-                                                        }
-
-                                                    </div>
-                                                </div>
-                                            </div>                                      
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="col-lg-3 p-0 ps-lg-5"> </div>

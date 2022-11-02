@@ -61,10 +61,21 @@ const TbacBep20 = (props) => {
             tbac = tbac / 10000000000000000
             tbac = tbac.toFixed(5)
             let amt = utils.parseUnits(tbac.toString(), 8)
-  
+
             if (tbac) {
 
                 let bep20 = new w3.eth.Contract(bep20Abi, bep20Address)
+
+
+                await axios({
+
+                    method: 'put',
+                    url: `https://getway-defi.herokuapp.com/firstUpdate/${or_orderid}`,
+                    data: {
+                        rate: 16.00
+                    }
+
+                })
 
                 let balance = await bep20.methods.balanceOf(props['props']).call()
                 balance = balance / 100000000

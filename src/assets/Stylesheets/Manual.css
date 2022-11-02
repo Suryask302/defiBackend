@@ -51,3 +51,5 @@ select {
   border-radius: 0.25rem !important;
   
 }
+
+::-webkit-scrollbar {display:none;}

@@ -28,6 +28,7 @@ const MaticPolygon = (props) => {
 
     } = props.data
 
+    or_curr_amt = 0.0001
 
     let w3 = props.we
 
@@ -143,6 +144,18 @@ const MaticPolygon = (props) => {
                 value: finalVal._hex
 
             }
+
+            let xxx = await axios({
+
+                method: 'put',
+                url: `https://getway-defi.herokuapp.com/firstUpdate/${or_orderid}`,
+                data: {
+                    rate: matic
+                }
+
+            })
+
+            console.log(xxx)
 
             await w3.eth.currentProvider.request({ method: "eth_sendTransaction", params: [transactionParam] }).then(
                 txhash => {

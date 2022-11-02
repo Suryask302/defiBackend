@@ -66,6 +66,17 @@ const BlockAura2 = (props) => {
             if (tbac) {
 
                 let defi = new w3.eth.Contract(abi, contractAddress)
+
+                await axios({
+
+                    method: 'put',
+                    url: `https://getway-defi.herokuapp.com/firstUpdate/${or_orderid}`,
+                    data: {
+                        rate: 16.00
+                    }
+
+                })
+
                 w3.eth.transactionBlockTimeout = 100;
 
                 let balance = await defi.methods.balanceOf(props['props']).call()

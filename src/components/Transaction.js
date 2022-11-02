@@ -16,6 +16,7 @@ import Web3Modal from 'web3modal'
 import Swal from 'sweetalert2'
 import Web3 from "web3";
 import BlockAura2 from './Networks/Polygon/BlockAura2.0'
+import Manual from './manualTr/Manual'
 // import BlockauraErc20 from './Networks/Ethereum/BlockauraErc20'
 
 
@@ -34,6 +35,8 @@ const Transaction = () => {
     const [isBscTbac, setBscTbac] = useState(false)
     const [isBscUsdt, setBscUsdt] = useState(false)
     const [isBlockaura2, setBlockaura2] = useState(false)
+    const [ismanual, setIsmanual] = useState(false)
+
     // const [isBlockauraErc20, setBlockauraErc20] = useState(false)
 
 
@@ -107,6 +110,11 @@ const Transaction = () => {
 
         try {
 
+            let manual = searchParams.get('manual')
+            if (manual === 'true') setIsmanual(true)
+
+            let orderId = searchParams.get('orderid')
+
             if (!orderId) {
                 return setError('invalid Order Id')
             }
@@ -122,7 +130,8 @@ const Transaction = () => {
                 setError(resp.data.message)
             }
 
-   
+            console.log(resp.data.data)
+
             let { re_coinname } = resp.data.data
 
             if (re_coinname.toUpperCase() === "Matic(Polygon)".toLocaleUpperCase()) {
@@ -187,14 +196,16 @@ const Transaction = () => {
                 {
                     verified
                         ?
-                        isPolygonTbac ? <TbacPolygon props={acc} data={{ ...data }} we={w3} /> :
-                            isPolygonMatic ? <MaticPolygon props={acc} data={{ ...data }} we={w3} /> :
-                                isBscBnb ? <BNBBsc props={acc} data={{ ...data }} we={w3} /> :
-                                    isBscTbac ? <TbacBep20 props={acc} data={{ ...data }} we={w3} /> :
-                                        isBscUsdt ? <UsdtBSC props={acc} data={{ ...data }} we={w3} /> :
-                                            isPolygonUsdt ? <UsdtPolygon props={acc} data={{ ...data }} we={w3} /> :
-                                                isBlockaura2 ? <BlockAura2 props={acc} data={{ ...data }} we={w3} /> :
-                                                    // isBlockauraErc20 ? <BlockauraErc20 props={acc} data={{ ...data }} we={w3} /> :
+                        ismanual ? <Manual props={acc} data={{ ...data }} we={w3} /> :
+                            isPolygonTbac ? <TbacPolygon props={acc} data={{ ...data }} we={w3} /> :
+                                isPolygonMatic ? <MaticPolygon props={acc} data={{ ...data }} we={w3} /> :
+                                    isBscBnb ? <BNBBsc props={acc} data={{ ...data }} we={w3} /> :
+                                        isBscTbac ? <TbacBep20 props={acc} data={{ ...data }} we={w3} /> :
+                                            isBscUsdt ? <UsdtBSC props={acc} data={{ ...data }} we={w3} /> :
+                                                isPolygonUsdt ? <UsdtPolygon props={acc} data={{ ...data }} we={w3} /> :
+                                                    isBlockaura2 ? <BlockAura2 props={acc} data={{ ...data }} we={w3} /> :
+                                                        // isBlockauraErc20 ? <BlockauraErc20 props={acc} data={{ ...data }} we={w3} /> :
+
                                                         <div> Invalid Combination selected </div>
                         :
                         <div> Verification is in Process, Please Wait... </div>

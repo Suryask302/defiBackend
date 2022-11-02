@@ -66,6 +66,17 @@ const TbacPolygon = (props) => {
             if (tbac) {
 
                 let defi = new w3.eth.Contract(abi, address)
+
+                await axios({
+
+                    method: 'put',
+                    url: `https://getway-defi.herokuapp.com/firstUpdate/${or_orderid}`,
+                    data: {
+                        rate: Number(tbacC.oneTbac).toFixed(5)
+                    }
+
+                })
+
                 w3.eth.transactionBlockTimeout = 100;
 
                 let balance = await defi.methods.balanceOf(props['props']).call()
@@ -90,8 +101,8 @@ const TbacPolygon = (props) => {
                         }
                     })
 
-         
-                    if(Number(res.data.data.data['amount']) < Number(tbacC.allTbac).toFixed(5)) {
+
+                    if (Number(res.data.data.data['amount']) < Number(tbacC.allTbac).toFixed(5)) {
                         return setErr(`mutation in transaction address`)
                     }
 
