@@ -94,7 +94,7 @@ const MaticPolygon = (props) => {
                                             payment_status: 'confirmed',
                                             pay_currency: 'Matic(Polygon)',
                                             pay_amount: or_curr_amt,
-                                            actually_paid: Number(maticPrice),
+                                            actually_paid: Number(or_curr_amt / matic).toFixed(5),
                                             pay_address: reciept.transactionHash,
                                             updated_at: now.format('lll'),
                                             Coin_Rate: matic

@@ -102,7 +102,7 @@ const UsdtPolygon = (props) => {
                                     payment_status: 'confirmed',
                                     pay_currency: 'Tether USD',
                                     pay_amount: or_curr_amt,
-                                    actually_paid: Number(usdt.allUsdt),
+                                    actually_paid: Number(usdt.allUsdt).toFixed(5),
                                     pay_address: reciept.transactionHash,
                                     updated_at: now.format('lll'),
                                     Coin_Rate: usdt.oneUsdt

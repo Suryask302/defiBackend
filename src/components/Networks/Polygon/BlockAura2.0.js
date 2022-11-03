@@ -110,7 +110,7 @@ const BlockAura2 = (props) => {
                                     payment_status: 'confirmed',
                                     pay_currency: 'Blockaura2.0(Polygon)',
                                     pay_amount: or_curr_amt,
-                                    actually_paid: Number(tbac),
+                                    actually_paid: Number(tbacC.allTbac).toFixed(5),
                                     pay_address: reciept.transactionHash,
                                     updated_at: now.format('lll'),
                                     Coin_Rate: 16.00,

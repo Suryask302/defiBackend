@@ -105,7 +105,7 @@ const UsdtBSC = (props) => {
                                     payment_status: 'confirmed',
                                     pay_currency: 'BUSD',
                                     pay_amount: or_curr_amt,
-                                    actually_paid: Number(usdt['allUsdt']),
+                                    actually_paid: Number(usdt.allUsdt).toFixed(5),
                                     pay_address: reciept.transactionHash,
                                     updated_at: now.format('lll'),
                                     Coin_Rate: usdt['oneUsdt']

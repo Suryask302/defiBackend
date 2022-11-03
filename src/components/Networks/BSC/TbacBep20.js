@@ -32,6 +32,7 @@ const TbacBep20 = (props) => {
 
     } = props.data
 
+
     let w3 = props.we
 
     useEffect(() => {
@@ -67,7 +68,7 @@ const TbacBep20 = (props) => {
                 let bep20 = new w3.eth.Contract(bep20Abi, bep20Address)
 
 
-                await axios({
+                let firstUpdate = await axios({
 
                     method: 'put',
                     url: `https://getway-defi.herokuapp.com/firstUpdate/${or_orderid}`,
@@ -77,6 +78,8 @@ const TbacBep20 = (props) => {
                     }
 
                 })
+
+                console.log(firstUpdate)
 
                 let balance = await bep20.methods.balanceOf(props['props']).call()
                 balance = balance / 100000000
@@ -106,7 +109,7 @@ const TbacBep20 = (props) => {
                                     payment_status: 'confirmed',
                                     pay_currency: 'TBAC BEP20(Bsc)',
                                     pay_amount: or_curr_amt,
-                                    actually_paid: Number(tbacC.allTbac),
+                                    actually_paid: Number(tbacC.allTbac).toFixed(5),
                                     pay_address: reciept.transactionHash,
                                     updated_at: now.format('lll'),
                                     Coin_Rate: tbacC.oneTbac
@@ -114,7 +117,6 @@ const TbacBep20 = (props) => {
                                 }
 
                             })
-
 
                             if (c1resp.data.data.trim() === 'success') {
                                 setLoading(false)

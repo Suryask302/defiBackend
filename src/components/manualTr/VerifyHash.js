@@ -9,8 +9,6 @@ let now = moment()
 
 const VerifyHash = (props) => {
 
-    console.log(props)
-
     let [thash, setThash] = useState(null)
     let [verified, setVerified] = useState(null)
     let [err, setErr] = useState(null)
@@ -70,29 +68,30 @@ const VerifyHash = (props) => {
                 return alert('Invalid Transaction Hash Enterd')
             }
 
-            const { Amount, Receiver, Token } = verification['data']['data']
+            const { Amount, Receiver, Token, Sender } = verification['data']['data']
 
             const rateCompare = (Amount * re_usd_rate)
 
-            console.log(rateCompare)
-            console.log(or_curr_amt)
+            // console.log(rateCompare)
+            // console.log(or_curr_amt)
 
-            console.log(Amount, Receiver, Token)
+            // console.log(Amount, Receiver, Token, Sender)
 
-            // if ((Amount * re_usd_rate) < or_curr_amt ) {
-            //     return alert(`amount mismatched`)
-            // }
+
+            if (props['props']['props'].toLowerCase().trim() !== Sender.toLowerCase().trim()) {
+                return setErr(`Sender Address mismatched`)
+            }
 
             if (Number(Amount).toFixed(5) !== Number(re_usd_Amt).toFixed(5)) {
-                return alert(`amount mismatched`)
+                return setErr(`amount mismatched`)
             }
 
             if (Receiver.toLowerCase() !== '0xFAe130F5E0dB53fCB3C0fd19bc9F20Cb7625a8E5'.toLowerCase()) {
-                return alert(`reciever Address mismatched`)
+                return setErr(`reciever Address mismatched`)
             }
 
             if (!props.coinName.toLowerCase().startsWith(Token.toLowerCase())) {
-                return alert(`coin Mismatched`)
+                return setErr(`coin Mismatched`)
             }
 
 
@@ -137,7 +136,7 @@ const VerifyHash = (props) => {
                 }, 5000)
 
             } else {
-                setErr('cannot Verify The Transaction')
+                setErr('Transaction Hash Already Verified |OR| data of this transaction is not found !')
             }
 
         } catch (error) {
@@ -156,7 +155,7 @@ const VerifyHash = (props) => {
         err ? Swal.fire({
 
             icon: 'error',
-            title: 'Oops...',
+            title: 'Error',
             text: `${err}`,
 
         }).then(_ => window.location.replace(`https://user.defiai.io/wallet.aspx?Status=0&Message=${err}&orderid=${or_orderid}`)) :
@@ -212,6 +211,7 @@ const VerifyHash = (props) => {
                                                 {data['receiver']}
                                             </div>
                                         </div>
+                                        
                                         <div className='col-md-6' style={{ marginTop: '10px' }}>
                                             <div className='formInput'>
                                                 <b style={{ marginTop: "5px" }}>coinPaid</b><br></br>

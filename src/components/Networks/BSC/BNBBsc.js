@@ -28,7 +28,6 @@ const BNBBsc = (props) => {
         or_custid,
         or_curr_amt
         
-
     } = props.data
 
     useEffect(() => {
@@ -109,7 +108,7 @@ const BNBBsc = (props) => {
                                             payment_status: 'confirmed',
                                             pay_currency: 'BNB(Bsc)',
                                             pay_amount: or_curr_amt,
-                                            actually_paid: Number(bnbPrice),
+                                            actually_paid: Number((or_curr_amt) / bnb).toFixed(5),
                                             pay_address: reciept.transactionHash,
                                             updated_at: now.format('lll'),
                                             Coin_Rate: bnb
