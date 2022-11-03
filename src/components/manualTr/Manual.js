@@ -8,7 +8,9 @@ import VerifyHash from './VerifyHash';
 const Manual = (props) => {
 
   let {
+
     re_coinname
+    
   } = props.data
 
   let [coin] = useState(re_coinname)
@@ -16,9 +18,7 @@ const Manual = (props) => {
   return (
 
     <>
-
       <div className='col-md-6 mx-auto mt-6'>
-
         <div style={{
           border: "2px solid black",
           padding: "20px",
@@ -27,13 +27,10 @@ const Manual = (props) => {
           height: '25%',
           width: '100%'
         }}>
-
           <Form.Group className="mb-3">
             <Form.Label>selected Coin</Form.Label>
             <input className='formInput' type='text' disabled value={re_coinname} />
           </Form.Group>
-
-
         </div>
 
       </div>

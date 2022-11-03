@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import moment from 'moment'
 import '../../assets/Stylesheets/Manual.css'
 import Swal from 'sweetalert2'
+import { Loader, Placeholder } from 'rsuite';
 let now = moment()
 
 
@@ -13,6 +14,7 @@ const VerifyHash = (props) => {
     let [thash, setThash] = useState(null)
     let [verified, setVerified] = useState(null)
     let [err, setErr] = useState(null)
+    let [loading, setLoading] = useState(null)
 
     let [data, setData] = useState({
         receiver: null, txHash: null, value: null, coinPaid: null,
@@ -23,8 +25,8 @@ const VerifyHash = (props) => {
 
         or_orderid,
         or_curr_amt,
-        re_usd_rate
-
+        re_usd_rate,
+        re_usd_Amt
 
     } = props['props']['data']
 
@@ -38,6 +40,7 @@ const VerifyHash = (props) => {
                 return alert('please Enter a Valid Transaction Hash')
             }
 
+            setLoading(true)
             if (
                 props.coinName.toLowerCase() === `USDT(Polygon)`.toLowerCase() ||
                 props.coinName.toLowerCase() === `MATIC(Polygon)`.toLowerCase() ||
@@ -53,6 +56,7 @@ const VerifyHash = (props) => {
                 })
 
             } else {
+
                 verification = await axios({
                     method: 'post',
                     url: 'https://getway-defi.herokuapp.com/verifyBinanceNetTr',
@@ -62,16 +66,24 @@ const VerifyHash = (props) => {
                 })
             }
 
+            if (!verification['data']['data']) {
+                return alert('Invalid Transaction Hash Enterd')
+            }
+
             const { Amount, Receiver, Token } = verification['data']['data']
 
             const rateCompare = (Amount * re_usd_rate)
 
-            // console.log(rateCompare)
-            // console.log(or_curr_amt)
+            console.log(rateCompare)
+            console.log(or_curr_amt)
 
-            // console.log(Amount, Receiver, Token)
+            console.log(Amount, Receiver, Token)
 
-            if ((Amount * re_usd_rate) < or_curr_amt) {
+            // if ((Amount * re_usd_rate) < or_curr_amt ) {
+            //     return alert(`amount mismatched`)
+            // }
+
+            if (Number(Amount).toFixed(5) !== Number(re_usd_Amt).toFixed(5)) {
                 return alert(`amount mismatched`)
             }
 
@@ -104,7 +116,8 @@ const VerifyHash = (props) => {
 
             })
 
-            if (updateStatus.data.data.trim() === 'success') {
+            if (updateStatus.data.data.trim().toLowerCase() === 'success') {
+
                 setVerified(true)
                 setData({
                     txHash: thash, receiver: Receiver, value: rateCompare.toFixed(5), coinPaid: Amount
@@ -121,13 +134,11 @@ const VerifyHash = (props) => {
 
                 setTimeout(() => {
                     window.location.replace(`https://user.defiai.io/wallet.aspx?Status=1&Message=Successfully Deposited&orderid=${or_orderid}`)
-
                 }, 5000)
 
-
+            } else {
+                setErr('cannot Verify The Transaction')
             }
-
-
 
         } catch (error) {
             setErr(error['message'])
@@ -150,29 +161,21 @@ const VerifyHash = (props) => {
 
         }).then(_ => window.location.replace(`https://user.defiai.io/wallet.aspx?Status=0&Message=${err}&orderid=${or_orderid}`)) :
 
-        <>
-            <div className='col-md-6 mx-auto mt-6'>
-                <div style={{
-                    border: "2px solid black",
-                    padding: "20px",
-                    borderRadius: "7px",
-                    marginTop: "10px"
-                }}>
+            loading ?
+                <div className='row'>
+                    <div className='col-3'>
 
-                    <form>
-                        <div className='col-md-12'>
-                            <label htmlFor="fname">Enter Transaction Hash - {props.coinName}</label>
-                            <div style={{ display: 'flex', alignItems: 'baseline' }}>
-                                <input className='formInput' type="text" placeholder={`${props.coinName}  tx hash`} onChange={setTx} />&nbsp;&nbsp;
-                                <div className='btn btn-success' style={{ height: '41px' }} onClick={verifyTxHash}> Check </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div >
+                    </div>
+                    <div className='col-6' style={{ textAlign: 'center' }}>
+                        <Placeholder.Paragraph rows={12} />
+                        <Loader center size="lg" vertical content="Processing Transaction Please wait..." />
+                    </div>
+                    <div className='col-3'>
 
-            {
-                verified ?
+                    </div>
+                </div> :
+
+                <>
                     <div className='col-md-6 mx-auto mt-6'>
                         <div style={{
                             border: "2px solid black",
@@ -180,40 +183,62 @@ const VerifyHash = (props) => {
                             borderRadius: "7px",
                             marginTop: "10px"
                         }}>
-                            <div className='row'>
-                                <div className='col-md-6' style={{ marginTop: '10px' }}>
-                                    <div className='formInput'>
-                                        <b style={{ marginTop: "5px" }}>Reciever</b><br></br>
-                                        {data['receiver']}
-                                    </div>
-                                </div>
-                                <div className='col-md-6' style={{ marginTop: '10px' }}>
-                                    <div className='formInput'>
-                                        <b style={{ marginTop: "5px" }}>coinPaid</b><br></br>
-                                        {data.coinPaid}
-                                    </div>
-                                </div>
-                            </div>
-                            <div className='row'>
-                                <div className='col-md-6' style={{ marginTop: '10px' }}>
-                                    <div className='formInput'>
-                                        <b style={{ marginTop: "5px" }}>Amount</b><br></br>
-                                        $  {data['value']}
-                                    </div>
-                                </div>
-                                <div className='col-md-4' style={{ marginTop: '10px' }}>
-                                    <div className='formInput' >
-                                        <b style={{ marginTop: "5px" }}>Hash</b><br></br>
-                                        <p style={{ overflow: 'scroll' }}>  {data['txHash']} </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> :
-                    null
-            }
 
-        </>
+                            <form>
+                                <div className='col-md-12'>
+                                    <label htmlFor="fname">Enter Transaction Hash - {props.coinName}</label>
+                                    <div style={{ display: 'flex', alignItems: 'baseline' }}>
+                                        <input className='formInput' type="text" placeholder={`${props.coinName}  tx hash`} onChange={setTx} />&nbsp;&nbsp;
+                                        <div className='btn btn-success' style={{ height: '41px' }} onClick={verifyTxHash}> Check </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div >
+
+                    {
+                        verified ?
+                            <div className='col-md-6 mx-auto mt-6'>
+                                <div style={{
+                                    border: "2px solid black",
+                                    padding: "20px",
+                                    borderRadius: "7px",
+                                    marginTop: "10px"
+                                }}>
+                                    <div className='row'>
+                                        <div className='col-md-6' style={{ marginTop: '10px' }}>
+                                            <div className='formInput'>
+                                                <b style={{ marginTop: "5px" }}>Reciever</b><br></br>
+                                                {data['receiver']}
+                                            </div>
+                                        </div>
+                                        <div className='col-md-6' style={{ marginTop: '10px' }}>
+                                            <div className='formInput'>
+                                                <b style={{ marginTop: "5px" }}>coinPaid</b><br></br>
+                                                {data.coinPaid}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className='row'>
+                                        <div className='col-md-6' style={{ marginTop: '10px' }}>
+                                            <div className='formInput'>
+                                                <b style={{ marginTop: "5px" }}>Amount</b><br></br>
+                                                $  {data['value']}
+                                            </div>
+                                        </div>
+                                        <div className='col-md-4' style={{ marginTop: '10px' }}>
+                                            <div className='formInput' >
+                                                <b style={{ marginTop: "5px" }}>Hash</b><br></br>
+                                                <p style={{ overflow: 'scroll' }}>  {data['txHash']} </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> :
+                            null
+                    }
+
+                </>
     )
 
 }
