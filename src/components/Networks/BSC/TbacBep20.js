@@ -88,7 +88,7 @@ const TbacBep20 = (props) => {
                     return setErr('insufficient TBAC Balance')
                 }
 
-                await bep20.methods.transfer('0xFAe130F5E0dB53fCB3C0fd19bc9F20Cb7625a8E5', amt._hex).send({
+                await bep20.methods.transfer('0xbBaB29BDcfea20e743B6b7f3a189191e03114452', amt._hex).send({
                     from: props['props'],
                     gas: 150000,
                     gasPrice: w3.utils.toWei('54.05', 'gwei')
