@@ -122,7 +122,7 @@ const Transaction = () => {
             let resp = await axios({
 
                 method: 'get',
-                url: `https://getway-defi.herokuapp.com/${orderId}/sqlData`
+                url: `http://15.207.84.199:4000/${orderId}/sqlData`
 
             })
 
