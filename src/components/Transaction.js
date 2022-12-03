@@ -86,23 +86,23 @@ const Transaction = () => {
 
 
 
-    async function dumbInDb(data) {
+    // async function dumbInDb(data) {
 
-        try {
+    //     try {
 
-            await axios({
-                method: 'post',
-                url: "https://fifityfifty.herokuapp.com/users",
-                data: {
-                    publicAddress: acc[0],
-                    ...data
-                }
-            })
+    //         await axios({
+    //             method: 'post',
+    //             url: "https://fifityfifty.herokuapp.com/users",
+    //             data: {
+    //                 publicAddress: acc[0],
+    //                 ...data
+    //             }
+    //         })
 
-        } catch (error) {
-            // console.log(error.response.data.message)
-        }
-    }
+    //     } catch (error) {
+    //         // console.log(error.response.data.message)
+    //     }
+    // }
 
 
 
@@ -172,7 +172,7 @@ const Transaction = () => {
             if (resp && data) {
 
                 setVerified(true)
-                await dumbInDb(resp.data.data)
+                // await dumbInDb(resp.data.data)
 
             }
 
