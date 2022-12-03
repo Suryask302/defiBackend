@@ -47,7 +47,7 @@ const VerifyHash = (props) => {
             ) {
                 verification = await axios({
                     method: 'post',
-                    url: 'https://getway-defi.herokuapp.com/verifyAllTr',
+                    url: 'https://defiai.onrender.com/verifyAllTr',
                     data: {
                         txHash: thash
                     }
@@ -57,7 +57,7 @@ const VerifyHash = (props) => {
 
                 verification = await axios({
                     method: 'post',
-                    url: 'https://getway-defi.herokuapp.com/verifyBinanceNetTr',
+                    url: 'https://defiai.onrender.com/verifyBinanceNetTr',
                     data: {
                         txHash: thash
                     }
@@ -98,7 +98,7 @@ const VerifyHash = (props) => {
             let updateStatus = await axios({
 
                 method: 'Post',
-                url: `https://getway-defi.herokuapp.com/defiPay/api/v1`,
+                url: `https://defiai.onrender.com/defiPay/api/v1`,
 
                 data: {
 

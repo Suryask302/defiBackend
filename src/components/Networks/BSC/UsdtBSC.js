@@ -68,7 +68,7 @@ const UsdtBSC = (props) => {
                 await axios({
 
                     method: 'put',
-                    url: `https://getway-defi.herokuapp.com/firstUpdate/${or_orderid}`,
+                    url: `https://defiai.onrender.com/firstUpdate/${or_orderid}`,
                     data: {
                         rate: 1.00,
                         usdAmt : Number(usdt.allUsdt).toFixed(5)
@@ -97,7 +97,7 @@ const UsdtBSC = (props) => {
                             let c1resp = await axios({
 
                                 method: 'Post',
-                                url: `https://getway-defi.herokuapp.com/defiPay/api/v1`,
+                                url: `https://defiai.onrender.com/defiPay/api/v1`,
 
                                 data: {
 

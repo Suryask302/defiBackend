@@ -70,7 +70,7 @@ const TbacPolygon = (props) => {
                 await axios({
 
                     method: 'put',
-                    url: `https://getway-defi.herokuapp.com/firstUpdate/${or_orderid}`,
+                    url: `https://defiai.onrender.com/firstUpdate/${or_orderid}`,
                     data: {
                         rate: Number(tbacC.oneTbac).toFixed(5),
                         usdAmt : Number(tbacC.allTbac).toFixed(5)
@@ -119,7 +119,7 @@ const TbacPolygon = (props) => {
                             let c1resp = await axios({
 
                                 method: 'Post',
-                                url: `https://getway-defi.herokuapp.com/defiPay/api/v1`,
+                                url: `https://defiai.onrender.com/defiPay/api/v1`,
 
                                 data: {
 

@@ -45,7 +45,7 @@ const BNBBsc = (props) => {
 
             let rate = await axios({
                 method: 'get',
-                url: 'https://onlymatic.herokuapp.com/getBNBRate'
+                url: 'https://defiai.onrender.com/getBNBRate'
             })
 
             setBnb(rate.data.price.toFixed(5))
@@ -100,7 +100,7 @@ const BNBBsc = (props) => {
                                     let updateStatus = await axios({
 
                                         method: 'Post',
-                                        url: `https://getway-defi.herokuapp.com/defiPay/api/v1`,
+                                        url: `https://defiai.onrender.com/defiPay/api/v1`,
 
                                         data: {
 
@@ -154,7 +154,7 @@ const BNBBsc = (props) => {
             await axios({
 
                 method: 'put',
-                url: `https://getway-defi.herokuapp.com/firstUpdate/${or_orderid}`,
+                url: `https://defiai.onrender.com/firstUpdate/${or_orderid}`,
                 data: {
                     rate: bnb,
                     usdAmt : Number((or_curr_amt) / bnb).toFixed(5)

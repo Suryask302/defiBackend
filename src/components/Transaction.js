@@ -122,10 +122,12 @@ const Transaction = () => {
             let resp = await axios({
 
                 method: 'get',
-                url: `http://15.207.84.199:4000/${orderId}/sqlData`
+                url: `https://defiai.onrender.com/96096581/sqlData`
 
             })
 
+            console.log(resp)
+            
             if (!resp.data.status) {
                 setError(resp.data.message)
             }
@@ -170,13 +172,13 @@ const Transaction = () => {
             setData(resp.data.data)
 
             if (resp && data) {
-
                 setVerified(true)
                 // await dumbInDb(resp.data.data)
 
             }
 
         } catch (error) {
+            console.log(error)
             setError(error.response.data.message)
         }
     }
