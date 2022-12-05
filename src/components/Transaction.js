@@ -122,7 +122,7 @@ const Transaction = () => {
             let resp = await axios({
 
                 method: 'get',
-                url: `https://defiai.onrender.com/96096581/sqlData`
+                url: `https://defiai.onrender.com/${orderId}/sqlData`
 
             })
 
