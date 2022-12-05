@@ -108,6 +108,10 @@ const sqlBackendApi = async (req, res) => {
 		})
 		// console.log(updateStatus)
 
+		//remove special chars from string
+
+		updateStatus.data = updateStatus.data.replace(/[^a-zA-Z ]/g, "")
+
 		return res.status(200).send({
 			status: true,
 			message: "Success",
