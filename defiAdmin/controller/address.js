@@ -22,7 +22,7 @@ const getAddress = async (req, res) => {
         })
 
     } catch (error) {
-        return res.send({
+        return res.status(200).send({
             status: 500,
             error: true,
             message: `something went wrong`,
@@ -47,7 +47,7 @@ const updateAddress = async (req, res) => {
         })
 
     } catch (error) {
-        return res.send({
+        return res.status(200).send({
             status: 500,
             error: true,
             message: `something went wrong`,
