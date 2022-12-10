@@ -19,6 +19,12 @@ const coinPriceModel = new Schema({
         type: String,
         required: true,
         trim: true
+    },
+
+    isRateManual: {
+        type: Boolean,
+        required: true,
+        default: false
     }
 
 }, { timestamps: true })

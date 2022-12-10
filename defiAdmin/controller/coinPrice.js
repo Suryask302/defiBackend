@@ -18,7 +18,7 @@ const getAllCoinPrices = async (req, res) => {
             status: 200,
             message: `Success`,
             error: false,
-            data: listOfCoin
+            data: listOfCoin,
         })
 
     } catch (error) {
@@ -36,12 +36,34 @@ const updateCoinRate = async (req, res) => {
 
     try {
 
-        const { coinId, rate } = req.body
+        const { coinId, rate, isManual } = req.body
+
+        let updateQuery = {}
+
+
+
+        if ('rate' in req.body) {
+
+            if (!updateQuery.hasOwnProperty('$set')) {
+                updateQuery['$set'] = {}
+            }
+
+            updateQuery['$set']['coinPrice'] = rate
+        }
+
+        if ('isManual' in req.body) {
+
+            if (!updateQuery.hasOwnProperty('$set')) {
+                updateQuery['$set'] = {}
+            }
+
+            updateQuery['$set']['isRateManual'] = isManual
+        }
 
         const updatedDoc = await coinPriceModel.findOneAndUpdate(
 
             { coinId },
-            { coinPrice: rate },
+            updateQuery,
             { new: true }
 
         )
@@ -53,7 +75,8 @@ const updateCoinRate = async (req, res) => {
             error: false,
             data: {
                 coinName: updatedDoc['coinName'],
-                coinPrice: updatedDoc['coinPrice']
+                coinPrice: updatedDoc['coinPrice'],
+                isManual : updatedDoc['isRateManual']
             }
 
         })
@@ -72,8 +95,6 @@ const updateCoinRate = async (req, res) => {
     }
 
 }
-
-
 
 module.exports = {
     getAllCoinPrices,
