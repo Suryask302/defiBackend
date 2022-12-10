@@ -14,13 +14,7 @@ let PORT = process.env.PORT || 4000
 const Data_Base_Url = "mongodb+srv://admin:admin123@siamaq.h4fjfrg.mongodb.net/dapp100Matic"
 
 //MongoDB Connection
-mongoose
-  .connect(Data_Base_Url, {
-    useNewUrlParser: true,
-  })
-
-  .then(() => console.log("mongoDb second Is Connected"))
-  .catch((err) => console.log(err));
+require('../defiAdmin/db/connect')
 
 app.get("/", (req, res) => {
   res.send('hello from server')

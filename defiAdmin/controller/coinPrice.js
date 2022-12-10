@@ -4,9 +4,6 @@ const getAllCoinPrices = async (req, res) => {
 
     try {
 
-        const conn = await mongoose.createConnection('mongodb+srv://admin:admin123@siamaq.h4fjfrg.mongodb.net/Defi');
-        console.log(conn)
-
         const listOfCoin = await coinPriceModel.find().select({
 
             _id: 0,
@@ -24,6 +21,7 @@ const getAllCoinPrices = async (req, res) => {
         })
 
     } catch (error) {
+        console.log(error)
         return res.send({
             status: 500,
             error: true,
