@@ -86,6 +86,8 @@ const globalVerify = async (req, res) => {
                 }
             })
 
+            console.log(result)
+
             if (!result['data']['data']) {
                 return res.status(200).json({
                     message: `Invalid Transaction Hash`
@@ -155,12 +157,25 @@ const globalVerify = async (req, res) => {
 
 }
 
-module.exports = {
-    globalVerify
+
+const getBlockauraRate = async (req, res) => {
+
+    try {
+        let rate = await axios.get('http://139.59.69.218:3390/api/rate')
+        console.log(rate)
+        return res.status(200).send({
+            status: 200,
+            message: 'Successs',
+            data: rate.data
+
+        })
+    } catch (error) {
+
+    }
+
 }
 
-
-// coinName.trim().toLowerCase().startsWith('matic') ||
-// coinName.trim().toLowerCase().startsWith('blockaura 2.0(polygon)') ||
-// coinName.trim().toLowerCase().startsWith('usdt(polygon)') ||
-// coinName.trim().toLowerCase().startsWith('matic') ||
+module.exports = {
+    globalVerify,
+    getBlockauraRate
+} 

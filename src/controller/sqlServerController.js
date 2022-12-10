@@ -10,7 +10,8 @@ const getSqlServerData = async (req, res) => {
 	try {
 
 		let OrderId = req.params.or_orderid;
-		OrderId = OrderId.trim();
+		OrderId = OrderId.trim()
+
 		if (!isValid(OrderId)) {
 			return res
 				.status(400)
@@ -20,7 +21,7 @@ const getSqlServerData = async (req, res) => {
 		let fullQuery =
 			"select * from Crypto_Gateway_Detail where or_orderid =" + OrderId;
 
-	
+
 		const resData = await request.query(fullQuery);
 		if (!resData.recordsets[0][0]) {
 			return res
@@ -68,13 +69,15 @@ const verifyTbacTR = async (req, res) => {
 const sqlBackendApi = async (req, res) => {
 	try {
 
-		const requestBody = req.body;
+		const requestBody = req.body
+
 		if (!isValidRequestBody(requestBody)) {
 			return res
 				.status(400)
 				.send({ status: false, message: "All fields are mandatory !" })
 		}
 		let {
+
 			order_id,
 			payment_status,
 			pay_currency,
@@ -85,7 +88,8 @@ const sqlBackendApi = async (req, res) => {
 			payment_id,
 			updated_at,
 			Coin_Rate,
-		} = requestBody;
+
+		} = requestBody
 
 		purchase_id = 0
 		payment_id = 0
@@ -126,7 +130,7 @@ const sqlBackendApi = async (req, res) => {
 };
 
 
-const firstUpdate = async (req, res) => {
+const firstUpdate = async (req, res) => {    
 
 	try {
 

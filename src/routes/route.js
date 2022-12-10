@@ -20,5 +20,5 @@ router.get("/getMaticRate", userController.MaticLiveRate)
 router.put('/firstUpdate/:orderId', sqlDb.firstUpdate)
 router.post('/verifyAllTr', sqlDb.verifyAllTransactions)
 router.post('/verifyBinanceNetTr', sqlDb.verifyBinanceTransactions)
-router.get('/globalVerify', apiPool.globalVerify)
+router.get('/globalVerify', apiPool.globalVerify).get('/getTbacRate', apiPool['getBlockauraRate'])
 module.exports = router;

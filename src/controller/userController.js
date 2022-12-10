@@ -270,25 +270,25 @@ const finalUpdateTransaction = async (req, res) => {
 
 const BNBLiveRate = async (req, res) => {
   try {
-   let rate = await axios.get(
-        "https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?symbol=BNB",
-        {
-          headers: {
-            "X-CMC_PRO_API_KEY": "c7262c86-0874-48e5-8cdf-a69ecc1d3b6c",
-          },
-        }
-      )
-      // console.log(rate.data.data.BNB[0].quote.USD.price)
-      // .then((tokenrate) => {
-      //   // console.log(tokenrate);
-      //   var price = tokenrate.data.data.BNB[0].quote.USD.price;
-      //   // console.log(price);
-        res.json({
-          status:true,
-          message: "BNB live rate",
-          price: rate.data.data.BNB[0].quote.USD.price,
-        });
-      // });
+    let rate = await axios.get(
+      "https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?symbol=BNB",
+      {
+        headers: {
+          "X-CMC_PRO_API_KEY": "c7262c86-0874-48e5-8cdf-a69ecc1d3b6c",
+        },
+      }
+    )
+    // console.log(rate.data.data.BNB[0].quote.USD.price)
+    // .then((tokenrate) => {
+    //   // console.log(tokenrate);
+    //   var price = tokenrate.data.data.BNB[0].quote.USD.price;
+    //   // console.log(price);
+    res.json({
+      status: true,
+      message: "BNB live rate",
+      price: rate.data.data.BNB[0].quote.USD.price,
+    });
+    // });
   } catch (error) {
     console.log(error);
   }
@@ -296,27 +296,25 @@ const BNBLiveRate = async (req, res) => {
 
 const MaticLiveRate = async (req, res) => {
   try {
-   let rate = await axios.get(
-        "https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?symbol=MATIC",
-        {
-          headers: {
-            "X-CMC_PRO_API_KEY": "c7262c86-0874-48e5-8cdf-a69ecc1d3b6c",
-          },
-        }
-      )
-      // console.log(rate.data.data.BNB[0].quote.USD.price)
-      // .then((tokenrate) => {
-      //   // console.log(tokenrate);
-      //   var price = tokenrate.data.data.BNB[0].quote.USD.price;
-      //   // console.log(price);
-        res.json({
-          status:true,
-          message: "Matic live rate",
-          price: rate.data.data.MATIC[0].quote.USD.price,
-        });
-      // });
+    let rate = await axios.get(
+      "https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?symbol=MATIC",
+      {
+        headers: {
+          "X-CMC_PRO_API_KEY": "c7262c86-0874-48e5-8cdf-a69ecc1d3b6c",
+        },
+      }
+    )
+
+    res.json({
+      status: true,
+      message: "Matic live rate",
+      price: rate.data.data.MATIC[0].quote.USD.price,
+    })
+
   } catch (error) {
-    console.log(error);
+    res.status(404).send({
+      message : 'rate Not Found' 
+    })
   }
 };
 

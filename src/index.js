@@ -1,11 +1,11 @@
+
+require('dotenv').config()
 const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
-const dotenv = require("dotenv");
 const route = require("./routes/route");
 const cors = require("cors");
-
-dotenv.config()
+const adminRoutes = require('../defiAdmin/routes/adminPannel')
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cors("*"))
@@ -19,7 +19,7 @@ mongoose
     useNewUrlParser: true,
   })
 
-  .then(() => console.log("mongoDb Is Connected"))
+  .then(() => console.log("mongoDb second Is Connected"))
   .catch((err) => console.log(err));
 
 app.get("/", (req, res) => {
@@ -27,5 +27,6 @@ app.get("/", (req, res) => {
 });
 
 app.use("/", route)
+app.use('/', adminRoutes)
 
 app.listen(PORT, (_) => console.log(`server is running on port ${PORT}`))
