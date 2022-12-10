@@ -1,35 +1,12 @@
 const { model, Schema } = require("mongoose")
 
-const coinPriceModel = new Schema({
-
-    coinId: {
-
-        type: Number,
-        required: true
-
-    },
-
-    coinName: {
-
-        type: String,
-        required: true
-
-    },
-
-    coinNetwork: {
-
-        type: String,
-        required: true
-
-    },
+const addressSchema = new Schema({
 
     recievingAddress: {
-
         type: String,
         required: true
-
-    },
+    }
 
 }, { timestamps: true })
 
-module.exports = model('coinprice', coinPriceModel)
+module.exports = model('recieveraddress', addressSchema)

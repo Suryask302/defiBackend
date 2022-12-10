@@ -1,11 +1,9 @@
+const addressModel = require('../models/addressModel')
 
-const coinPriceModel = require('../models/coinPriceModel')
-
-const getAllCoinPrices = async (req, res) => {
-
+const getAddress = async (req, res) => {
     try {
 
-        const listOfCoin = await coinPriceModel.find().select({
+        let recieverAddress = await addressModel.find().select({
 
             _id: 0,
             createdAt: 0,
@@ -15,10 +13,12 @@ const getAllCoinPrices = async (req, res) => {
         })
 
         return res.status(200).send({
+
             status: 200,
             message: `Success`,
             error: false,
-            data: listOfCoin
+            data: recieverAddress
+
         })
 
     } catch (error) {
@@ -32,50 +32,31 @@ const getAllCoinPrices = async (req, res) => {
 
 }
 
-const updateCoinRate = async (req, res) => {
-
+const updateAddress = async (req, res) => {
     try {
 
-        const { coinId, rate } = req.body
-
-        const updatedDoc = await coinPriceModel.findOneAndUpdate(
-
-            { coinId },
-            { coinPrice: rate },
-            { new: true }
-
-        )
-
+        const { address } = req.body
+        const updatedAddress = await addressModel.findOneAndUpdate({}, { recievingAddress: address }, { new: true })
         return res.status(200).send({
 
             status: 200,
             message: `Success`,
             error: false,
-            data: {
-                coinName: updatedDoc['coinName'],
-                coinPrice: updatedDoc['coinPrice']
-            }
-            
+            data: updatedAddress
+
         })
 
-
-
     } catch (error) {
-
         return res.send({
             status: 500,
             error: true,
-            message: `updation Failed`,
+            message: `something went wrong`,
             data: null
         })
-
     }
-
 }
 
-
-
 module.exports = {
-    getAllCoinPrices,
-    updateCoinRate
+    getAddress,
+    updateAddress
 }
