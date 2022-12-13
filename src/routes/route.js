@@ -23,5 +23,5 @@ router.put('/firstUpdate/:orderId', sqlDb.firstUpdate)
 router.post('/verifyAllTr', sqlDb.verifyAllTransactions)
 router.post('/verifyBinanceNetTr', sqlDb.verifyBinanceTransactions)
 router.get('/globalVerify', apiPool.globalVerify).get('/getTbacRate', apiPool['getBlockauraRate'])
-.get('/getRate/api/v1', apiPool['getCalculatedRates'])
+.post('/getRate/api/v1', apiPool['getCalculatedRates'])
 module.exports = router;

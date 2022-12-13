@@ -8,7 +8,7 @@ const cors = require("cors");
 const adminRoutes = require('../defiAdmin/routes/adminPannel')
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(cors("*"))
+app.use(cors("*")) 
 
 let PORT = process.env.PORT || 4000
 const Data_Base_Url = "mongodb+srv://admin:admin123@siamaq.h4fjfrg.mongodb.net/dapp100Matic"
