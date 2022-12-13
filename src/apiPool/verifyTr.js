@@ -274,7 +274,7 @@ const getCalculatedRates = async (req, res) => {
                 })
             }
 
-            let currentRate = rate.data.data.MATIC[0].quote.USD.price.toFixed(5)
+            let currentRate = rate.data.data.BNB[0].quote.USD.price.toFixed(5)
 
             return res.status(200).json({
 
@@ -314,6 +314,7 @@ const getCalculatedRates = async (req, res) => {
 
     } catch (error) {
 
+        console.log(error)
         return res.status(200).json({
             status: 200,
             message: `unable to get rate`
