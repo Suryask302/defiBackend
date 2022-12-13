@@ -243,7 +243,7 @@ const getCalculatedRates = async (req, res) => {
 
             }
 
-            let currentRate = rate['data']['tbac_in_usd']
+            let currentRate = rate['data']['tbac_in_usd'].toFixed(5)
 
             return res.status(200).json({
 
