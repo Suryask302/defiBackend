@@ -175,7 +175,156 @@ const getBlockauraRate = async (req, res) => {
 
 }
 
+// this Api will show total ammount to paid and rate of coin to .net app
+
+const getCalculatedRates = async (req, res) => {
+
+    try {
+
+        let { amtInUsd, coinName } = req.body
+
+        if (!amtInUsd) {
+            return res.status(200).send({
+                status: 400,
+                message: 'invalid Amount Enterd'
+            })
+
+        }
+
+        if (!coinName) {
+            return res.status(200).send({
+                status: 400,
+                message: 'please provide coinName'
+            })
+
+        }
+
+        if (coinName.trim().toLowerCase() === 'matic(polygon)') {
+
+            let rate = await axios.get(
+                "https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?symbol=MATIC",
+                {
+                    headers: {
+                        "X-CMC_PRO_API_KEY": "c7262c86-0874-48e5-8cdf-a69ecc1d3b6c",
+                    },
+                }
+            )
+
+            if (!rate.data.data.MATIC[0].quote.USD.price) {
+
+                return res.status(200).json({
+                    status: 500,
+                    message: `unable to get rate`
+                })
+                
+            }
+
+            let currentRate = rate.data.data.MATIC[0].quote.USD.price.toFixed(5)
+
+            return res.status(200).json({
+
+                status: 200,
+                message: "Success",
+                rate: currentRate,
+                needToPay: Number(amtInUsd / currentRate)
+
+            })
+
+        } else if (coinName.trim().toLowerCase() === 'blockaura 3.0(polygon)') {
+
+            let rate = await axios.get('http://139.59.69.218:3390/api/rate')
+
+            if (!rate['data'] || !rate['data']['tbac_in_usd']) {
+
+                return res.status(200).json({
+                    status: 500,
+                    message: `unable to get rate`
+                })
+
+            }
+
+            let currentRate = rate['data']['tbac_in_usd']
+
+            return res.status(200).json({
+
+                status: 200,
+                message: "Success",
+                rate: currentRate,
+                needToPay: Number(amtInUsd / currentRate)
+
+            })
+
+
+        } else if (coinName.trim().toLowerCase() === 'bnb(bep 20') {
+
+            let rate = await axios.get(
+                "https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?symbol=BNB",
+                {
+                    headers: {
+                        "X-CMC_PRO_API_KEY": "c7262c86-0874-48e5-8cdf-a69ecc1d3b6c",
+                    },
+                }
+            )
+
+            if (!rate.data.data.BNB[0].quote.USD.price) {
+
+                return res.status(200).json({
+                    status: 500,
+                    message: `unable to get rate`
+                })
+            }
+
+            let currentRate = rate.data.data.MATIC[0].quote.USD.price.toFixed(5)
+
+            return res.status(200).json({
+
+                status: 200,
+                message: "Success",
+                rate: currentRate,
+                needToPay: Number(amtInUsd / currentRate)
+
+            })
+
+        } else if (
+            coinName.trim().toLowerCase() === 'busd(bep20)' ||
+            coinName.trim().toLowerCase() === 'usdt(polygon)'
+
+        ) {
+
+            let rate = 1.00000
+            return res.status(200).json({
+
+                status: 200,
+                message: "Success",
+                rate: rate,
+                needToPay: Number(amtInUsd / rate)
+
+            })
+
+
+        } else {
+
+            return res.status(200).json({
+                status: 200,
+                message: 'Invalid Coin Name Selected'
+
+            })
+
+        }
+
+    } catch (error) {
+        return res.status(200).json({
+            status: 200,
+            message: `unable to get rate`
+        })
+    }
+
+}
+
+
+
 module.exports = {
     globalVerify,
-    getBlockauraRate
+    getBlockauraRate,
+    getCalculatedRates
 } 
