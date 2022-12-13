@@ -255,7 +255,7 @@ const getCalculatedRates = async (req, res) => {
             })
 
 
-        } else if (coinName.trim().toLowerCase() === 'bnb(bep 20') {
+        } else if (coinName.trim().toLowerCase() === 'bnb(bep 20)') {
 
             let rate = await axios.get(
                 "https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?symbol=BNB",
