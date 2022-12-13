@@ -216,7 +216,7 @@ const getCalculatedRates = async (req, res) => {
                     status: 500,
                     message: `unable to get rate`
                 })
-                
+
             }
 
             let currentRate = rate.data.data.MATIC[0].quote.USD.price.toFixed(5)
@@ -226,7 +226,7 @@ const getCalculatedRates = async (req, res) => {
                 status: 200,
                 message: "Success",
                 rate: currentRate,
-                needToPay: Number(amtInUsd / currentRate)
+                needToPay: Number(amtInUsd / currentRate).toFixed(5)
 
             })
 
@@ -250,7 +250,7 @@ const getCalculatedRates = async (req, res) => {
                 status: 200,
                 message: "Success",
                 rate: currentRate,
-                needToPay: Number(amtInUsd / currentRate)
+                needToPay: Number(amtInUsd / currentRate).toFixed(5)
 
             })
 
@@ -281,7 +281,7 @@ const getCalculatedRates = async (req, res) => {
                 status: 200,
                 message: "Success",
                 rate: currentRate,
-                needToPay: Number(amtInUsd / currentRate)
+                needToPay: Number(amtInUsd / currentRate).toFixed(5)
 
             })
 
@@ -297,7 +297,7 @@ const getCalculatedRates = async (req, res) => {
                 status: 200,
                 message: "Success",
                 rate: rate,
-                needToPay: Number(amtInUsd / rate)
+                needToPay: Number(amtInUsd / rate).toFixed(5)
 
             })
 
@@ -313,10 +313,12 @@ const getCalculatedRates = async (req, res) => {
         }
 
     } catch (error) {
+
         return res.status(200).json({
             status: 200,
             message: `unable to get rate`
         })
+
     }
 
 }
