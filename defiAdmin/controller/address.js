@@ -39,7 +39,7 @@ const updateAddress = async (req, res) => {
         console.log(address)
         const updatedAddress = await addressModel.findOneAndUpdate({}, { recievingAddress: address }, { new: true })
         return res.status(200).send({
-
+  
             status: 200,
             message: `Success`,
             error: false,

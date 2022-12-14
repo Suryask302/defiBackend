@@ -325,9 +325,111 @@ const getCalculatedRates = async (req, res) => {
 }
 
 
+//send All coins rate
+
+const sendAllCoinRates = async (req, res) => {
+
+    try {
+
+
+        let maticRate = await axios.get(
+            "https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?symbol=MATIC",
+            {
+                headers: {
+                    "X-CMC_PRO_API_KEY": "c7262c86-0874-48e5-8cdf-a69ecc1d3b6c",
+                },
+            }
+        )
+
+        if (!maticRate.data.data.MATIC[0].quote.USD.price) {
+
+            return res.status(200).json({
+                status: 500,
+                message: `unable to get rate`
+            })
+
+        }
+
+        let MaticLiveRate = maticRate.data.data.MATIC[0].quote.USD.price.toFixed(5)
+
+
+        let blockAuraRate = await axios.get('http://139.59.69.218:3390/api/rate')
+
+        if (!blockAuraRate['data'] || !blockAuraRate['data']['tbac_in_usd']) {
+
+            return res.status(200).json({
+                status: 500,
+                message: `unable to get rate`
+            })
+
+        }
+
+        let blockAuraLiveRate = blockAuraRate['data']['tbac_in_usd'].toFixed(5)
+
+
+        let bnbRate = await axios.get(
+            "https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?symbol=BNB",
+            {
+                headers: {
+                    "X-CMC_PRO_API_KEY": "c7262c86-0874-48e5-8cdf-a69ecc1d3b6c",
+                },
+            }
+        )
+
+        if (!bnbRate.data.data.BNB[0].quote.USD.price) {
+
+            return res.status(200).json({
+                status: 500,
+                message: `unable to get rate`
+            })
+        }
+
+        let bnbLiveRate = bnbRate.data.data.BNB[0].quote.USD.price.toFixed(5)
+
+        return res.status(200).send({
+            status: 200,
+            message: `Success`,
+            data: [
+                {
+                    coinName: `Matic(Polygon)`,
+                    rate: MaticLiveRate
+                },
+                {
+                    coinName: `blockAura 3.0(Polygon)`,
+                    rate: blockAuraLiveRate
+                },
+                {
+                    coinName: `bnb(bep 20)`,
+                    rate: bnbLiveRate
+                },
+                {
+                    coinName: `usdt(polygon)`,
+                    rate: `1.00000`
+                },
+                {
+                    coinName: `busd(bep 20)`,
+                    rate: `1.00000`
+                }
+
+            ]
+        })
+
+    } catch (error) {
+
+        return res.status(200).json({
+            status: 200,
+            message: `unable to get rate`
+        })
+    }
+
+}
+
+
 
 module.exports = {
     globalVerify,
     getBlockauraRate,
-    getCalculatedRates
+    getCalculatedRates,
+    sendAllCoinRates
+    
 } 
