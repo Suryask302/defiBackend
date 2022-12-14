@@ -1,6 +1,7 @@
 
 const { isValid } = require("../utils/helper")
 const axios = require('axios')
+const coinPriceModel = require("../../defiAdmin/models/coinPriceModel")
 
 
 const globalVerify = async (req, res) => {
@@ -199,93 +200,162 @@ const getCalculatedRates = async (req, res) => {
 
         }
 
+        const coinArr = await coinPriceModel.find()
+        
         if (coinName.trim().toLowerCase() === 'matic(polygon)') {
 
-            let rate = await axios.get(
-                "https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?symbol=MATIC",
-                {
-                    headers: {
-                        "X-CMC_PRO_API_KEY": "c7262c86-0874-48e5-8cdf-a69ecc1d3b6c",
-                    },
-                }
-            )
+            let recCoinName = coinName.replace(/ /g, '')
+            let currentRate = null
+            let coin = coinArr.find(x => x['coinName'].trim().toLowerCase() === recCoinName.trim().toLowerCase())
 
-            if (!rate.data.data.MATIC[0].quote.USD.price) {
+            if (coin['isRateManual']) {
+
+                currentRate = coin['coinPrice'].toFixed(5)
 
                 return res.status(200).json({
-                    status: 500,
-                    message: `unable to get rate`
+
+                    status: 200,
+                    message: "Success",
+                    rate: currentRate,
+                    needToPay: Number(amtInUsd / currentRate).toFixed(5)
+
+                })
+
+            } else {
+
+                let rate = await axios.get(
+                    "https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?symbol=MATIC",
+                    {
+                        headers: {
+                            "X-CMC_PRO_API_KEY": "c7262c86-0874-48e5-8cdf-a69ecc1d3b6c",
+                        },
+                    }
+                )
+
+                if (!rate.data.data.MATIC[0].quote.USD.price) {
+
+                    return res.status(200).json({
+                        status: 500,
+                        message: `unable to get rate`
+                    })
+
+                }
+
+                currentRate = rate.data.data.MATIC[0].quote.USD.price.toFixed(5)
+
+                return res.status(200).json({
+
+                    status: 200,
+                    message: "Success",
+                    rate: currentRate,
+                    needToPay: Number(amtInUsd / currentRate).toFixed(5)
+
                 })
 
             }
-
-            let currentRate = rate.data.data.MATIC[0].quote.USD.price.toFixed(5)
-
-            return res.status(200).json({
-
-                status: 200,
-                message: "Success",
-                rate: currentRate,
-                needToPay: Number(amtInUsd / currentRate).toFixed(5)
-
-            })
 
         } else if (coinName.trim().toLowerCase() === 'blockaura 3.0(polygon)') {
 
-            let rate = await axios.get('http://139.59.69.218:3390/api/rate')
+            let recCoinName = coinName.replace(/ /g, '')
+            let currentRate = null
+            let coin = coinArr.find(x => x['coinName'].trim().toLowerCase() === recCoinName.trim().toLowerCase())
 
-            if (!rate['data'] || !rate['data']['tbac_in_usd']) {
+            if (coin['isRateManual']) {
+
+                currentRate = coin['coinPrice'].toFixed(5)
 
                 return res.status(200).json({
-                    status: 500,
-                    message: `unable to get rate`
+
+                    status: 200,
+                    message: "Success",
+                    rate: currentRate,
+                    needToPay: Number(amtInUsd / currentRate).toFixed(5)
+
+                })
+
+
+            } else {
+
+                let rate = await axios.get('http://139.59.69.218:3390/api/rate')
+
+                if (!rate['data'] || !rate['data']['tbac_in_usd']) {
+
+                    return res.status(200).json({
+                        status: 500,
+                        message: `unable to get rate`
+                    })
+
+                }
+
+                currentRate = rate['data']['tbac_in_usd'].toFixed(5)
+
+                return res.status(200).json({
+
+                    status: 200,
+                    message: "Success",
+                    rate: currentRate,
+                    needToPay: Number(amtInUsd / currentRate).toFixed(5)
+
                 })
 
             }
-
-            let currentRate = rate['data']['tbac_in_usd'].toFixed(5)
-
-            return res.status(200).json({
-
-                status: 200,
-                message: "Success",
-                rate: currentRate,
-                needToPay: Number(amtInUsd / currentRate).toFixed(5)
-
-            })
-
 
         } else if (coinName.trim().toLowerCase() === 'bnb(bep 20)') {
 
-            let rate = await axios.get(
-                "https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?symbol=BNB",
-                {
-                    headers: {
-                        "X-CMC_PRO_API_KEY": "c7262c86-0874-48e5-8cdf-a69ecc1d3b6c",
-                    },
-                }
-            )
 
-            if (!rate.data.data.BNB[0].quote.USD.price) {
+            let recCoinName = coinName.replace(/ /g, '')
+            let currentRate = null
+            let coin = coinArr.find(x => x['coinName'].trim().toLowerCase() === recCoinName.trim().toLowerCase())
+
+            if (coin['isRateManual']) {
+
+                currentRate = coin['coinPrice'].toFixed(5)
 
                 return res.status(200).json({
-                    status: 500,
-                    message: `unable to get rate`
+
+                    status: 200,
+                    message: "Success",
+                    rate: currentRate,
+                    needToPay: Number(amtInUsd / currentRate).toFixed(5)
+
                 })
+
+            }
+            else {
+
+                let rate = await axios.get(
+                    "https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?symbol=BNB",
+                    {
+                        headers: {
+                            "X-CMC_PRO_API_KEY": "c7262c86-0874-48e5-8cdf-a69ecc1d3b6c",
+                        },
+                    }
+                )
+    
+                if (!rate.data.data.BNB[0].quote.USD.price) {
+    
+                    return res.status(200).json({
+                        status: 500,
+                        message: `unable to get rate`
+                    })
+                }
+    
+                currentRate = rate.data.data.BNB[0].quote.USD.price.toFixed(5)
+    
+                return res.status(200).json({
+    
+                    status: 200,
+                    message: "Success",
+                    rate: currentRate,
+                    needToPay: Number(amtInUsd / currentRate).toFixed(5)
+    
+                })
+    
             }
 
-            let currentRate = rate.data.data.BNB[0].quote.USD.price.toFixed(5)
-
-            return res.status(200).json({
-
-                status: 200,
-                message: "Success",
-                rate: currentRate,
-                needToPay: Number(amtInUsd / currentRate).toFixed(5)
-
-            })
-
+            
         } else if (
+
             coinName.trim().toLowerCase() === 'busd(bep20)' ||
             coinName.trim().toLowerCase() === 'usdt(polygon)'
 
@@ -427,9 +497,10 @@ const sendAllCoinRates = async (req, res) => {
 
 
 module.exports = {
+
     globalVerify,
     getBlockauraRate,
     getCalculatedRates,
     sendAllCoinRates
-    
+
 } 
