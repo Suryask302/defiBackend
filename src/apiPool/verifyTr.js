@@ -46,7 +46,7 @@ const globalVerify = async (req, res) => {
             } else
 
                 if (coinName.trim().toLowerCase() === 'blockaura 3.0(polygon)') {
-                    coinRate = 61.00000
+                    coinRate = 13.19425
                 } else
 
                     if (coinName.trim().toLowerCase() === 'busd(bep20)') {
@@ -201,7 +201,7 @@ const getCalculatedRates = async (req, res) => {
         }
 
         const coinArr = await coinPriceModel.find()
-        
+
         if (coinName.trim().toLowerCase() === 'matic(polygon)') {
 
             let recCoinName = coinName.replace(/ /g, '')
@@ -331,29 +331,29 @@ const getCalculatedRates = async (req, res) => {
                         },
                     }
                 )
-    
+
                 if (!rate.data.data.BNB[0].quote.USD.price) {
-    
+
                     return res.status(200).json({
                         status: 500,
                         message: `unable to get rate`
                     })
                 }
-    
+
                 currentRate = rate.data.data.BNB[0].quote.USD.price.toFixed(5)
-    
+
                 return res.status(200).json({
-    
+
                     status: 200,
                     message: "Success",
                     rate: currentRate,
                     needToPay: Number(amtInUsd / currentRate).toFixed(5)
-    
+
                 })
-    
+
             }
 
-            
+
         } else if (
 
             coinName.trim().toLowerCase() === 'busd(bep20)' ||

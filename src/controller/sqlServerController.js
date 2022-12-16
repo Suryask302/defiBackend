@@ -110,7 +110,7 @@ const sqlBackendApi = async (req, res) => {
 				Coin_Rate,
 			},
 		})
-		// console.log(updateStatus)
+		console.log(updateStatus)
 
 		//remove special chars from string
 
