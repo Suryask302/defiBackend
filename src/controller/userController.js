@@ -319,7 +319,7 @@ const BNBLiveRate = async (req, res) => {
 
          {
             headers: {
-               "X-CMC_PRO_API_KEY": "c7262c86-0874-48e5-8cdf-a69ecc1d3b6c",
+               "X-CMC_PRO_API_KEY": process.env.CMCAPIKEY,
             }
          }
 
@@ -345,7 +345,7 @@ const MaticLiveRate = async (req, res) => {
          "https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?symbol=MATIC",
          {
             headers: {
-               "X-CMC_PRO_API_KEY": "c7262c86-0874-48e5-8cdf-a69ecc1d3b6c",
+               "X-CMC_PRO_API_KEY": process.env.CMCAPIKEY,
             },
          }
       )
