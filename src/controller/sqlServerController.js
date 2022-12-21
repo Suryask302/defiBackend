@@ -95,9 +95,12 @@ const sqlBackendApi = async (req, res) => {
 		payment_id = 0
 
 		let updateStatus = await axios({
+
 			method: "Post",
 			url: `https://user.defiai.io/selfgateway.ashx`,
+
 			data: {
+
 				order_id,
 				payment_status,
 				pay_currency,
@@ -107,8 +110,10 @@ const sqlBackendApi = async (req, res) => {
 				purchase_id,
 				payment_id,
 				updated_at,
-				Coin_Rate,
-			},
+				Coin_Rate
+
+			}
+
 		})
 		console.log(updateStatus)
 
@@ -117,17 +122,20 @@ const sqlBackendApi = async (req, res) => {
 		updateStatus.data = updateStatus.data.replace(/[^a-zA-Z ]/g, "")
 
 		return res.status(200).send({
+
 			status: true,
 			message: "Success",
-			data: updateStatus.data,
+			data: updateStatus.data
+			
 		})
 
 	} catch (error) {
 		return res.status(500).send({
-			message: error.message,
+			message: error.message
 		})
 	}
-};
+
+}
 
 
 const firstUpdate = async (req, res) => {    
@@ -154,8 +162,8 @@ const firstUpdate = async (req, res) => {
 
 			return res.status(200).send({
 				status: true,
-				message: "Success",
-			});
+				message: "Success"
+			})
 
 
 		}

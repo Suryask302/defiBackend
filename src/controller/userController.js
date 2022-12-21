@@ -95,6 +95,7 @@ const coin1Transaction = async (req, res) => {
 
       //Requestbody Destructure
       const {
+
          OrderID,
          coin_1_amount,
          Coin_1_Rate,
@@ -104,88 +105,112 @@ const coin1Transaction = async (req, res) => {
          MaticPaid,
          FromAddress,
          ToAddress
-      } = requestBody;
+
+      } = requestBody
 
       if (!isValid(OrderID)) {
+
          return res
             .status(400)
-            .send({ status: false, message: "Please Enter orderId !" });
+            .send({ status: false, message: "Please Enter orderId !" })
+
       }
 
-      let coin1TrUpdateData = {};
+      let coin1TrUpdateData = {}
 
       if ("coin_1_amount" in requestBody) {
+
          if (!("$set" in coin1TrUpdateData)) {
-            coin1TrUpdateData["$set"] = {};
+            coin1TrUpdateData["$set"] = {}
          }
-         coin1TrUpdateData["$set"]["coin_1_amount"] = coin_1_amount;
+         coin1TrUpdateData["$set"]["coin_1_amount"] = coin_1_amount
+
       }
 
       if ("Coin_1_Rate" in requestBody) {
+
          if (!("$set" in coin1TrUpdateData)) {
-            coin1TrUpdateData["$set"] = {};
+            coin1TrUpdateData["$set"] = {}
          }
-         coin1TrUpdateData["$set"]["Coin_1_Rate"] = Coin_1_Rate;
+
+         coin1TrUpdateData["$set"]["Coin_1_Rate"] = Coin_1_Rate
+
       }
 
       if ("coin_1_txHash" in requestBody) {
+
          if (!("$set" in coin1TrUpdateData)) {
             coin1TrUpdateData["$set"] = {};
          }
-         coin1TrUpdateData["$set"]["coin_1_txHash"] = coin_1_txHash;
+         coin1TrUpdateData["$set"]["coin_1_txHash"] = coin_1_txHash
+
       }
 
       if ("coin_1_trTime" in requestBody) {
+
          if (!("$set" in coin1TrUpdateData)) {
-            coin1TrUpdateData["$set"] = {};
+            coin1TrUpdateData["$set"] = {}
          }
-         coin1TrUpdateData["$set"]["coin_1_trTime"] = coin_1_trTime;
+         coin1TrUpdateData["$set"]["coin_1_trTime"] = coin_1_trTime
+
       }
 
       if ("coin_1_status" in requestBody) {
+
          if (!("$set" in coin1TrUpdateData)) {
-            coin1TrUpdateData["$set"] = {};
+            coin1TrUpdateData["$set"] = {}
          }
-         coin1TrUpdateData["$set"]["coin_1_status"] = coin_1_status;
+         coin1TrUpdateData["$set"]["coin_1_status"] = coin_1_status
+
       }
 
       if ("MaticPaid" in requestBody) {
+
          if (!("$set" in coin1TrUpdateData)) {
-            coin1TrUpdateData["$set"] = {};
+            coin1TrUpdateData["$set"] = {}
          }
-         coin1TrUpdateData["$set"]["MaticPaid"] = MaticPaid;
+         coin1TrUpdateData["$set"]["MaticPaid"] = MaticPaid
+
       }
 
       if ("FromAddress" in requestBody) {
+
          if (!("$set" in coin1TrUpdateData)) {
-            coin1TrUpdateData["$set"] = {};
+            coin1TrUpdateData["$set"] = {}
          }
-         coin1TrUpdateData["$set"]["FromAddress"] = FromAddress;
+         coin1TrUpdateData["$set"]["FromAddress"] = FromAddress
+
       }
 
       if ("ToAddress" in requestBody) {
+
          if (!("$set" in coin1TrUpdateData)) {
-            coin1TrUpdateData["$set"] = {};
+            coin1TrUpdateData["$set"] = {}
          }
-         coin1TrUpdateData["$set"]["ToAddress"] = ToAddress;
+
+         coin1TrUpdateData["$set"]["ToAddress"] = ToAddress
+
       }
 
       //Validation to check OrderId exists
-      const isCustomerTrExist = await userTrModel.findOne({ orderId: OrderID });
+      const isCustomerTrExist = await userTrModel.findOne({ orderId: OrderID })
 
       if (!isCustomerTrExist) {
+
          return res
             .status(400)
-            .send({ status: false, message: "Transaction not exist" });
+            .send({ status: false, message: "Transaction not exist" })
+
       }
 
       if (coin_1_status === true) {
-         let coin_1_ApiRes = true;
+         let coin_1_ApiRes = true
 
          if (!("$set" in coin1TrUpdateData)) {
-            coin1TrUpdateData["$set"] = {};
+            coin1TrUpdateData["$set"] = {}
          }
-         coin1TrUpdateData["$set"]["coin_1_ApiRes"] = coin_1_ApiRes;
+         coin1TrUpdateData["$set"]["coin_1_ApiRes"] = coin_1_ApiRes
+
       }
 
       //Update Query
@@ -193,13 +218,14 @@ const coin1Transaction = async (req, res) => {
          { orderId: OrderID },
          coin1TrUpdateData,
          { new: true }
-      );
+      )
 
       return res
          .status(200)
-         .send({ status: true, message: "Success", data: updatedTransaction });
+         .send({ status: true, message: "Success", data: updatedTransaction })
+
    } catch (error) {
-      return res.status(500).send({ status: false, message: error.message });
+      return res.status(500).send({ status: false, message: error.message })
    }
 };
 
@@ -211,45 +237,52 @@ const finalUpdateTransaction = async (req, res) => {
       if (!isValidRequestBody(requestBody)) {
          return res
             .status(400)
-            .send({ status: false, message: "All fields are mandatory !" });
+            .send({ status: false, message: "All fields are mandatory !" })
       }
 
       //Requestbody Destructure
-      let { OrderID, final_status } = requestBody;
+      let { OrderID, final_status } = requestBody
 
       if (!isValid(OrderID)) {
+
          return res
             .status(400)
-            .send({ status: false, message: "Please Enter orderId !" });
+            .send({ status: false, message: "Please Enter orderId !" })
+
       }
 
       const isCustomerTrExist = await userTrModel
          .findOne({ orderId: OrderID })
-         .lean();
+         .lean()
+
       if (!isCustomerTrExist) {
+
          return res
             .status(404)
-            .send({ status: false, message: "Transaction not exist" });
+            .send({ status: false, message: "Transaction not exist" })
+
       }
 
       if (!(isCustomerTrExist.coin_1_status == true)) {
+
          return res.status(400).send({
             status: false,
             message: "Coin1 transaction not Done yet!",
-         });
+         })
+
       }
 
       let trUpdateData = {};
 
-      final_status = true;
+      final_status = true
       if (!("$set" in trUpdateData)) {
-         trUpdateData["$set"] = {};
+         trUpdateData["$set"] = {}
       }
-      trUpdateData["$set"]["final_status"] = final_status;
+      trUpdateData["$set"]["final_status"] = final_status
 
-      let final_ApiRes = true;
+      let final_ApiRes = true
       if (!("$set" in trUpdateData)) {
-         trUpdateData["$set"] = {};
+         trUpdateData["$set"] = {}
       }
       trUpdateData["$set"]["final_ApiRes"] = final_ApiRes;
 
@@ -262,9 +295,17 @@ const finalUpdateTransaction = async (req, res) => {
 
       return res
          .status(200)
-         .send({ status: true, message: "Success", data: updatedTransaction });
+         .send({
+            status: true,
+            message: "Success",
+            data: updatedTransaction
+         })
+
    } catch (error) {
-      return res.status(500).send({ status: false, message: error.message });
+      return res.status(500).send({
+         status: false,
+         message: error.message
+      })
    }
 };
 
@@ -320,7 +361,7 @@ const MaticLiveRate = async (req, res) => {
          message: 'rate Not Found'
       })
    }
-}  
+}
 
 module.exports = {
    transaction,

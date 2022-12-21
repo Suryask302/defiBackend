@@ -85,7 +85,7 @@ const globalVerify = async (req, res) => {
                 data: {
                     hash: txHash
                 }
-            })
+            }) 
 
             console.log(result)
 
@@ -162,6 +162,7 @@ const globalVerify = async (req, res) => {
 const getBlockauraRate = async (req, res) => {
 
     try {
+
         let rate = await axios.get('http://139.59.69.218:3390/api/rate')
         console.log(rate)
         return res.status(200).send({
@@ -170,6 +171,7 @@ const getBlockauraRate = async (req, res) => {
             data: rate.data
 
         })
+
     } catch (error) {
 
     }
@@ -200,7 +202,7 @@ const getCalculatedRates = async (req, res) => {
 
         }
 
-        const coinArr = await coinPriceModel.find()
+        const coinArr = await coinPriceModel.find() 
 
         if (coinName.trim().toLowerCase() === 'matic(polygon)') {
 
@@ -227,7 +229,7 @@ const getCalculatedRates = async (req, res) => {
                     "https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?symbol=MATIC",
                     {
                         headers: {
-                            "X-CMC_PRO_API_KEY": "c7262c86-0874-48e5-8cdf-a69ecc1d3b6c",
+                            "X-CMC_PRO_API_KEY": process.env.CMCAPIKEY,
                         },
                     }
                 )
@@ -327,7 +329,7 @@ const getCalculatedRates = async (req, res) => {
                     "https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?symbol=BNB",
                     {
                         headers: {
-                            "X-CMC_PRO_API_KEY": "c7262c86-0874-48e5-8cdf-a69ecc1d3b6c",
+                            "X-CMC_PRO_API_KEY": process.env.CMCAPIKEY,
                         },
                     }
                 )
@@ -406,7 +408,7 @@ const sendAllCoinRates = async (req, res) => {
             "https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?symbol=MATIC",
             {
                 headers: {
-                    "X-CMC_PRO_API_KEY": "c7262c86-0874-48e5-8cdf-a69ecc1d3b6c",
+                    "X-CMC_PRO_API_KEY": process.env.CMCAPIKEY,
                 },
             }
         )
@@ -441,7 +443,7 @@ const sendAllCoinRates = async (req, res) => {
             "https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?symbol=BNB",
             {
                 headers: {
-                    "X-CMC_PRO_API_KEY": "c7262c86-0874-48e5-8cdf-a69ecc1d3b6c",
+                    "X-CMC_PRO_API_KEY": process.env.CMCAPIKEY,
                 },
             }
         )
@@ -496,11 +498,134 @@ const sendAllCoinRates = async (req, res) => {
 
 
 
+
+const showTrData = async (req, res) => {
+
+    try {
+
+        let { txHash, coinName } = req.body
+
+        if (!txHash) {
+            return res.status(200).send({
+                message: `Transaction Hash is required`
+            })
+        }
+
+        if (!coinName) {
+            return res.status(200).send({
+                message: `coinName is required`
+            })
+        }
+
+        if (Object.keys(req.body).length !== 2) {
+            return res.status(200).send({
+                message: `Dont send useLess Query Params`
+            })
+        }
+
+        if (!isValid(txHash) || !isValid(coinName)) {
+            return res.status(200).json({
+                message: `invalid Tx Hash or invalid CoinName`,
+                status: 400
+            })
+        }
+
+        if (
+
+            coinName.trim().toLowerCase() === 'matic(polygon)' ||
+            coinName.trim().toLowerCase() === 'blockaura 2.0(polygon)' ||
+            coinName.trim().toLowerCase() === 'usdt(polygon)' ||
+            coinName.trim().toLowerCase() === 'blockaura 3.0(polygon)'
+
+        ) {
+
+            let result = await axios({
+                method: 'post',
+                url: `http://139.59.69.218:3390/api/transactionPolygon`,
+                data: {
+                    hash: txHash
+                }
+            }) 
+
+            console.log(result)
+
+            if (!result['data']['data']) {
+                return res.status(200).json({
+                    message: `Invalid Transaction Hash`
+                })
+            }
+
+            let { Token, Amount } = result['data']['data']
+
+            if (!coinName.toLowerCase().startsWith(Token.toLowerCase())) {
+
+                return res.status(200).send({
+                    message: `Transaction Hash is Belongs to ${Token} and selected coin is ${coinName}`
+                })
+            }
+
+            let dollorPaid = Number(Amount) * coinRate
+
+            return res.status(200).send({
+                message: `Success`,
+                data: dollorPaid.toFixed(2)
+            })
+
+
+        } else {
+
+            let result = await axios({
+                method: 'post',
+                url: `http://139.59.69.218:3390/api/transactionBsc`,
+                data: {
+                    hash: txHash
+                }
+            })
+
+            if (!result['data']['data']) {
+                return res.status(200).json({
+                    message: `Invalid Transaction Hash`
+                })
+            }
+
+
+            let { Amount, Token } = result['data']['data']
+
+            if (!coinName.toLowerCase().startsWith(Token.toLowerCase())) {
+                return res.status(200).send({
+                    message: `Transaction Hash is Belongs to ${Token} and selected coin is ${coinName}`
+                })
+            }
+
+            let dollorPaid = Number(Amount) * coinRate
+
+            return res.status(200).send({
+                message: `Success`,
+                data: dollorPaid.toFixed(2)
+            })
+
+        }
+
+
+    } catch (error) {
+        console.log(error)
+        res.status(200).json({
+            status: 200,
+            message: `Invalid Transaction Hash`
+        })
+    }
+
+
+}
+
+
+
 module.exports = {
 
     globalVerify,
     getBlockauraRate,
     getCalculatedRates,
-    sendAllCoinRates
+    sendAllCoinRates,
+    showTrData
 
 } 

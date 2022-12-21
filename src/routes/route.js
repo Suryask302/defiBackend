@@ -25,4 +25,5 @@ router.post('/verifyBinanceNetTr', sqlDb.verifyBinanceTransactions)
 router.get('/globalVerify', apiPool.globalVerify).get('/getTbacRate', apiPool['getBlockauraRate'])
     .post('/getRate/api/v1', apiPool['getCalculatedRates'])
     .get('/allCoinRates', apiPool.sendAllCoinRates)
+    .post('/showTxData', apiPool.showTrData)
 module.exports = router;
