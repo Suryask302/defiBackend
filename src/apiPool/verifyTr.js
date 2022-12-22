@@ -706,6 +706,7 @@ const showTrData = async (req, res) =>{
                 message: `Success`,
                 data: {
                     dollorPaid : dollorPaid.toFixed(2),
+                    rate : coinRate,
                     ...apiResp[`data`]
                 }
             })
@@ -743,6 +744,7 @@ const showTrData = async (req, res) =>{
                 message: `Success`,
                 data: {
                     dollorPaid : dollorPaid.toFixed(2),
+                    rate : coinRate,
                     ...apiResp[`data`]
                 }
             })
