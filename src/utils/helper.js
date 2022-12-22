@@ -1,4 +1,8 @@
 //Required field validation
+
+const axios = require('axios');
+const coinDataModel = require('../models/coinDataModel');
+
 const isValid = (value) => {
   if (typeof value == "undefined" || value == null) return false;
   if (typeof value == "String" && value.trim().length === 0) return false;
@@ -12,4 +16,31 @@ const isValidRequestBody = (requestBody) => {
   return false;
 };
 
-module.exports = { isValid, isValidRequestBody };
+const getmaticRateByCmcApi = async () => {
+
+  try {
+
+    let maticRate = await coinDataModel.findOne({ symbol: 'MATIC' }).select({ rateInUsd: 1 })
+    return maticRate[`rateInUsd`]
+
+  } catch (error) {
+    return error.message
+  }
+
+}
+
+const getBNBRateByCmcApi = async () => {
+
+  try {
+
+    let bnbRate = await coinDataModel.findOne({ symbol: 'BNB' }).select({ rateInUsd: 1 })
+    return bnbRate[`rateInUsd`]
+    
+  } catch (error) {
+    return error[`message`]
+  }
+}
+
+
+
+module.exports = { isValid, isValidRequestBody, getmaticRateByCmcApi, getBNBRateByCmcApi };

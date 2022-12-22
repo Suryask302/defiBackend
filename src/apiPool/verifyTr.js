@@ -1,5 +1,5 @@
 
-const { isValid } = require("../utils/helper")
+const { isValid, getmaticRateByCmcApi, getBNBRateByCmcApi } = require("../utils/helper")
 const axios = require('axios')
 const coinPriceModel = require("../../defiAdmin/models/coinPriceModel")
 
@@ -85,7 +85,7 @@ const globalVerify = async (req, res) => {
                 data: {
                     hash: txHash
                 }
-            }) 
+            })
 
             console.log(result)
 
@@ -164,7 +164,6 @@ const getBlockauraRate = async (req, res) => {
     try {
 
         let rate = await axios.get('http://139.59.69.218:3390/api/rate')
-        console.log(rate)
         return res.status(200).send({
             status: 200,
             message: 'Successs',
@@ -202,7 +201,7 @@ const getCalculatedRates = async (req, res) => {
 
         }
 
-        const coinArr = await coinPriceModel.find() 
+        const coinArr = await coinPriceModel.find()
 
         if (coinName.trim().toLowerCase() === 'matic(polygon)') {
 
@@ -225,16 +224,9 @@ const getCalculatedRates = async (req, res) => {
 
             } else {
 
-                let rate = await axios.get(
-                    "https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?symbol=MATIC",
-                    {
-                        headers: {
-                            "X-CMC_PRO_API_KEY": process.env.CMCAPIKEY,
-                        },
-                    }
-                )
+                let rate = await getmaticRateByCmcApi()
 
-                if (!rate.data.data.MATIC[0].quote.USD.price) {
+                if (!rate) {
 
                     return res.status(200).json({
                         status: 500,
@@ -243,7 +235,7 @@ const getCalculatedRates = async (req, res) => {
 
                 }
 
-                currentRate = rate.data.data.MATIC[0].quote.USD.price.toFixed(5)
+                currentRate = rate
 
                 return res.status(200).json({
 
@@ -325,24 +317,18 @@ const getCalculatedRates = async (req, res) => {
             }
             else {
 
-                let rate = await axios.get(
-                    "https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?symbol=BNB",
-                    {
-                        headers: {
-                            "X-CMC_PRO_API_KEY": process.env.CMCAPIKEY,
-                        },
-                    }
-                )
+                let rate = await getBNBRateByCmcApi()
 
-                if (!rate.data.data.BNB[0].quote.USD.price) {
+                if (!rate) {
 
                     return res.status(200).json({
                         status: 500,
                         message: `unable to get rate`
                     })
+
                 }
 
-                currentRate = rate.data.data.BNB[0].quote.USD.price.toFixed(5)
+                currentRate = rate
 
                 return res.status(200).json({
 
@@ -404,16 +390,9 @@ const sendAllCoinRates = async (req, res) => {
     try {
 
 
-        let maticRate = await axios.get(
-            "https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?symbol=MATIC",
-            {
-                headers: {
-                    "X-CMC_PRO_API_KEY": process.env.CMCAPIKEY,
-                },
-            }
-        )
+        let maticRate = await getmaticRateByCmcApi()
 
-        if (!maticRate.data.data.MATIC[0].quote.USD.price) {
+        if (!maticRate) {
 
             return res.status(200).json({
                 status: 500,
@@ -422,7 +401,7 @@ const sendAllCoinRates = async (req, res) => {
 
         }
 
-        let MaticLiveRate = maticRate.data.data.MATIC[0].quote.USD.price.toFixed(5)
+        let MaticLiveRate = maticRate
 
 
         let blockAuraRate = await axios.get('http://139.59.69.218:3390/api/rate')
@@ -439,16 +418,9 @@ const sendAllCoinRates = async (req, res) => {
         let blockAuraLiveRate = blockAuraRate['data']['tbac_in_usd'].toFixed(5)
 
 
-        let bnbRate = await axios.get(
-            "https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?symbol=BNB",
-            {
-                headers: {
-                    "X-CMC_PRO_API_KEY": process.env.CMCAPIKEY,
-                },
-            }
-        )
+        let bnbRate = await getBNBRateByCmcApi()
 
-        if (!bnbRate.data.data.BNB[0].quote.USD.price) {
+        if (!bnbRate) {
 
             return res.status(200).json({
                 status: 500,
@@ -456,7 +428,7 @@ const sendAllCoinRates = async (req, res) => {
             })
         }
 
-        let bnbLiveRate = bnbRate.data.data.BNB[0].quote.USD.price.toFixed(5)
+        let bnbLiveRate = bnbRate
 
         return res.status(200).send({
             status: 200,
@@ -499,7 +471,7 @@ const sendAllCoinRates = async (req, res) => {
 
 
 
-const showTrData = async (req, res) => {
+const xyz = async (req, res) => {
 
     try {
 
@@ -529,6 +501,7 @@ const showTrData = async (req, res) => {
                 status: 400
             })
         }
+        
 
         if (
 
@@ -545,9 +518,9 @@ const showTrData = async (req, res) => {
                 data: {
                     hash: txHash
                 }
-            }) 
+            })
 
-            console.log(result)
+            let apiResp = result['data']
 
             if (!result['data']['data']) {
                 return res.status(200).json({
@@ -564,11 +537,15 @@ const showTrData = async (req, res) => {
                 })
             }
 
+            const coinRate = await getmaticRateByCmcApi()
             let dollorPaid = Number(Amount) * coinRate
 
             return res.status(200).send({
                 message: `Success`,
-                data: dollorPaid.toFixed(2)
+                data: {
+                    dollorPaid: dollorPaid.toFixed(2),
+                    ...apiResp['data']
+                }
             })
 
 
@@ -617,6 +594,174 @@ const showTrData = async (req, res) => {
 
 
 }
+
+
+
+const showTrData = async (req, res) =>{
+
+    try {
+
+        let { txHash, coinName } = req.body
+
+        if (!txHash) {
+            return res.status(200).send({
+                message: `Transaction Hash is required`
+            })
+        }
+
+        if (!coinName) {
+            return res.status(200).send({
+                message: `coinName is required`
+            })
+        }
+
+        if (Object.keys(req.body).length !== 2) {
+            return res.status(200).send({
+                message: `Dont send useLess Query Params`
+            })
+        }
+
+        if (!isValid(txHash) || !isValid(coinName)) {
+            return res.status(200).json({
+                message: `invalid Tx Hash or invalid CoinName`,
+                status: 400
+            })
+        }
+
+        let coinRate;
+
+        if (coinName.trim().toLowerCase() === 'matic(polygon)') {
+            coinRate = await getmaticRateByCmcApi()
+        } else
+
+            if (coinName.trim().toLowerCase() === 'blockaura 2.0(polygon)') {
+                coinRate = 16.00000
+            } else
+
+                if (coinName.trim().toLowerCase() === 'blockaura 3.0(polygon)') {
+                    let blockAuraRate = await axios.get('http://139.59.69.218:3390/api/rate')
+                    coinRate = blockAuraRate['data']['tbac_in_usd'].toFixed(5)
+
+                } else
+
+                    if (coinName.trim().toLowerCase() === 'busd(bep20)') {
+                        coinRate = 1.00000
+                    } else
+
+                        if (coinName.trim().toLowerCase() === 'bnb(bep20)') {
+                            coinRate = getBNBRateByCmcApi()
+                        } else
+
+                            if (coinName.trim().toLowerCase() === 'blockaura(bep20)') {
+                                coinRate = 16.00000
+                            } else
+
+                                if (coinName.trim().toLowerCase() === 'usdt(polygon)') {
+                                    coinRate = 1.00000
+
+                                } else {
+                                    return res.status(400).send({
+                                        message: 'invalid coin Name'
+                                    })
+                                }
+
+        if (
+
+            coinName.trim().toLowerCase() === 'matic(polygon)' ||
+            coinName.trim().toLowerCase() === 'blockaura 2.0(polygon)' ||
+            coinName.trim().toLowerCase() === 'usdt(polygon)' ||
+            coinName.trim().toLowerCase() === 'blockaura 3.0(polygon)'
+
+        ) {
+
+            let result = await axios({
+                method: 'post',
+                url: `http://139.59.69.218:3390/api/transactionPolygon`,
+                data: {
+                    hash: txHash
+                }
+            })
+
+
+            if (!result['data']['data']) {
+                return res.status(200).json({
+                    message: `Invalid Transaction Hash`
+                })
+            }
+
+            let apiResp = result['data']
+
+            let { Token, Amount } = result['data']['data']
+
+            if (!coinName.toLowerCase().startsWith(Token.toLowerCase())) {
+
+                return res.status(200).send({
+                    message: `Transaction Hash is Belongs to ${Token} and selected coin is ${coinName}`
+                })
+            }
+
+            let dollorPaid = Number(Amount) * coinRate
+
+            return res.status(200).send({
+                message: `Success`,
+                data: {
+                    dollorPaid : dollorPaid.toFixed(2),
+                    ...apiResp[`data`]
+                }
+            })
+
+
+        } else {
+
+            let result = await axios({
+                method: 'post',
+                url: `http://139.59.69.218:3390/api/transactionBsc`,
+                data: {
+                    hash: txHash
+                }
+            })
+
+            if (!result['data']['data']) {
+                return res.status(200).json({
+                    message: `Invalid Transaction Hash`
+                })
+            }
+
+            let apiResp = result[`data`]
+
+            let { Amount, Token } = result['data']['data']
+
+            if (!coinName.toLowerCase().startsWith(Token.toLowerCase())) {
+                return res.status(200).send({
+                    message: `Transaction Hash is Belongs to ${Token} and selected coin is ${coinName}`
+                })
+            }
+
+            let dollorPaid = Number(Amount) * coinRate
+
+            return res.status(200).send({
+                message: `Success`,
+                data: {
+                    dollorPaid : dollorPaid.toFixed(2),
+                    ...apiResp[`data`]
+                }
+            })
+
+        }
+
+
+    } catch (error) {
+        console.log(error)
+        res.status(200).json({
+            status: 200,
+            message: `Invalid Transaction Hash`
+        })
+    }
+
+
+
+}
+
 
 
 

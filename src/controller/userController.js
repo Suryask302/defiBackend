@@ -1,5 +1,5 @@
 const userTrModel = require("../models/userTrModel");
-const { isValid, isValidRequestBody } = require("../utils/helper");
+const { isValid, isValidRequestBody, getBNBRateByCmcApi, getmaticRateByCmcApi } = require("../utils/helper");
 const axios = require("axios");
 
 // Create transaction
@@ -313,23 +313,13 @@ const BNBLiveRate = async (req, res) => {
 
    try {
 
-      let rate = await axios.get(
-
-         "https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?symbol=BNB",
-
-         {
-            headers: {
-               "X-CMC_PRO_API_KEY": process.env.CMCAPIKEY,
-            }
-         }
-
-      )
+      let rate = await getBNBRateByCmcApi()
 
       res.json({
 
          status: true,
          message: "BNB live rate",
-         price: rate.data.data.BNB[0].quote.USD.price
+         price: rate
 
       });
 
@@ -341,19 +331,12 @@ const BNBLiveRate = async (req, res) => {
 
 const MaticLiveRate = async (req, res) => {
    try {
-      let rate = await axios.get(
-         "https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?symbol=MATIC",
-         {
-            headers: {
-               "X-CMC_PRO_API_KEY": process.env.CMCAPIKEY,
-            },
-         }
-      )
 
+      let rate = await getmaticRateByCmcApi()
       res.json({
          status: true,
          message: "Matic live rate",
-         price: rate.data.data.MATIC[0].quote.USD.price,
+         price: rate
       })
 
    } catch (error) {

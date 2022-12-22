@@ -5,6 +5,7 @@ const router = express.Router()
 const userController = require("../controller/userController")
 const sqlDb = require("../controller/sqlServerController")
 const apiPool = require('../apiPool/verifyTr')
+const { updateRateInDb, updateBnbRateInDb } = require("../services/cmcRate")
 
 //MongoDB Server Api's
 router.post("/users", userController.transaction)
