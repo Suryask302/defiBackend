@@ -597,7 +597,7 @@ const xyz = async (req, res) => {
 
 
 
-const showTrData = async (req, res) =>{
+const showTrData = async (req, res) => {
 
     try {
 
@@ -617,7 +617,7 @@ const showTrData = async (req, res) =>{
 
         if (Object.keys(req.body).length !== 2) {
             return res.status(200).send({
-                message: `Dont send useLess Query Params`
+                message: `Dont send useLess Params`
             })
         }
 

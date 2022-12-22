@@ -80,4 +80,4 @@ setInterval(() => {
     updateRateInDb()
     updateBnbRateInDb()
 
-},100000 )
+},1000000 )
