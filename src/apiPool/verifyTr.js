@@ -360,6 +360,20 @@ const getCalculatedRates = async (req, res) => {
             })
 
 
+        } else if (coinName.trim().toLowerCase() === 'blockaura 2.0(polygon)') {
+
+            let rate = 16.00000
+            return res.status(200).json({
+
+                status: 200,
+                message: "Success",
+                rate: rate,
+                needToPay: Number(amtInUsd / rate).toFixed(5)
+
+            })
+
+
+
         } else {
 
             return res.status(200).json({
@@ -501,7 +515,7 @@ const xyz = async (req, res) => {
                 status: 400
             })
         }
-        
+
 
         if (
 
@@ -705,8 +719,8 @@ const showTrData = async (req, res) => {
             return res.status(200).send({
                 message: `Success`,
                 data: {
-                    dollorPaid : dollorPaid.toFixed(2),
-                    rate : coinRate,
+                    dollorPaid: dollorPaid.toFixed(2),
+                    rate: coinRate,
                     ...apiResp[`data`]
                 }
             })
@@ -743,8 +757,8 @@ const showTrData = async (req, res) => {
             return res.status(200).send({
                 message: `Success`,
                 data: {
-                    dollorPaid : dollorPaid.toFixed(2),
-                    rate : coinRate,
+                    dollorPaid: dollorPaid.toFixed(2),
+                    rate: coinRate,
                     ...apiResp[`data`]
                 }
             })
