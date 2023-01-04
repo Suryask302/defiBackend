@@ -374,7 +374,20 @@ const getCalculatedRates = async (req, res) => {
 
 
 
-        } else {
+        } else if (coinName.trim().toLowerCase() === 'blockaura(bep20)') {
+
+            let rate = 16.00000
+            return res.status(200).json({
+
+                status: 200,
+                message: "Success",
+                rate: rate,
+                needToPay: Number(amtInUsd / rate).toFixed(5)
+
+            })
+
+        }
+        else {
 
             return res.status(200).json({
                 status: 200,
